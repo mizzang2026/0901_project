@@ -67,6 +67,39 @@
 
       <article class="article-block">
         <span class="article-number">03</span><div>
+          <h2>Git 작성자 정보 처음 설정하기</h2>
+          <p>Git을 처음 설치한 컴퓨터에서는 커밋에 남길 작성자 이름과 이메일을 한 번 설정해야 합니다. 이 정보는 GitHub 로그인 정보가 아니라 <strong>커밋 기록에 표시되는 작성자 정보</strong>입니다.</p>
+          <pre><code>git config --global user.name "사용자 이름"
+git config --global user.email "user@example.com"</code></pre>
+          <p><code>--global</code>은 이 컴퓨터에서 만드는 모든 Git 프로젝트에 기본값으로 적용한다는 뜻입니다. 설정이 잘 저장됐는지는 다음처럼 확인합니다.</p>
+          <pre><code>git config --global user.name
+git config --global user.email
+git config --global --list</code></pre>
+          <p class="inline-note">페이지에는 실제 이름과 이메일을 기록하지 않습니다. 공개 저장소의 커밋 정보도 다른 사람이 볼 수 있으므로, 이메일 공개가 부담스럽다면 GitHub에서 제공하는 비공개용 <code>noreply</code> 이메일을 사용할 수 있습니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">04</span><div>
+          <h2>GitHub 로그인과 인증 코드 입력</h2>
+          <p>처음 <code>git push</code>할 때는 이 컴퓨터가 GitHub 계정에 접근해도 되는지 인증하는 과정이 나타날 수 있습니다. 비밀번호를 명령창에 직접 입력하는 대신 브라우저를 이용해 안전하게 승인합니다.</p>
+          <div class="process-flow" aria-label="GitHub 브라우저 인증 과정">
+            <span>git push 실행</span><i>→</i><span>브라우저 로그인</span><i>→</i><span>일회용 코드 입력</span><i>→</i><span>접근 승인</span>
+          </div>
+          <div class="install-steps"><ol>
+            <li>터미널에서 <code>git push</code>를 실행합니다.</li>
+            <li>GitHub 로그인 안내와 일회용 인증 코드가 나타나면 코드를 복사합니다.</li>
+            <li>안내에 따라 브라우저를 열고 GitHub 계정으로 로그인합니다. Google 계정으로 가입했다면 해당 로그인 방식을 사용할 수 있습니다.</li>
+            <li>브라우저의 인증 화면에 복사한 코드를 입력하고 접근을 승인합니다.</li>
+            <li>터미널로 돌아오면 인증이 완료되고 push가 계속 진행됩니다.</li>
+          </ol></div>
+          <p>승인 후에는 Windows의 자격 증명 관리 도구가 인증 정보를 보관하므로 매번 같은 절차를 반복하지 않는 경우가 많습니다. 로그아웃, 자격 증명 삭제, 권한 만료 등이 발생하면 다시 인증할 수 있습니다.</p>
+          <p class="inline-note">인증 코드는 일회용이며 다른 사람에게 알려주거나 화면 캡처에 남기지 않습니다. GitHub 비밀번호, 액세스 토큰, 복구 코드도 프로젝트 파일이나 공개 페이지에 저장하면 안 됩니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">05</span><div>
           <h2>프로젝트 전체를 GitHub에 올리는 순서</h2>
           <div class="process-flow" aria-label="GitHub 업로드 흐름">
             <span>파일 작성</span><i>→</i><span>변경 확인</span><i>→</i><span>커밋</span><i>→</i><span>GitHub push</span>
@@ -88,7 +121,7 @@ git push -u origin main</code></pre>
       </article>
 
       <article class="article-block">
-        <span class="article-number">04</span><div>
+        <span class="article-number">06</span><div>
           <h2>Live Server와 실제 웹 배포</h2>
           <div class="topic-grid">
             <section><h3>Live Server</h3><p>내 컴퓨터에서 작업 중인 HTML을 브라우저로 확인하는 로컬 미리보기 도구입니다. 기본적으로 인터넷에 공개되는 사이트는 아닙니다.</p></section>
@@ -105,7 +138,7 @@ git push -u origin main</code></pre>
       </article>
 
       <article class="article-block">
-        <span class="article-number">05</span><div>
+        <span class="article-number">07</span><div>
           <h2>GitHub Pages 활성화하기</h2>
           <div class="install-steps"><ol>
             <li>GitHub에서 프로젝트 저장소를 엽니다.</li>
@@ -125,7 +158,7 @@ https://mizzang2026.github.io/0901_project/frontend/</code></pre>
       </article>
 
       <article class="article-block">
-        <span class="article-number">06</span><div>
+        <span class="article-number">08</span><div>
           <h2>무료 호스팅의 범위</h2>
           <p>GitHub Pages는 공개 저장소의 정적 웹사이트를 무료로 제공하기 때문에 개인 홈페이지, 수업 과제, 포트폴리오, 프로젝트 소개 사이트에 잘 맞습니다.</p>
           <div class="topic-grid">
@@ -137,7 +170,7 @@ https://mizzang2026.github.io/0901_project/frontend/</code></pre>
       </article>
 
       <article class="article-block">
-        <span class="article-number">07</span><div>
+        <span class="article-number">09</span><div>
           <h2>수정 후 다시 공개하는 방법</h2>
           <p>사이트를 수정한 뒤 저장하고 아래 과정을 반복하면 GitHub와 Pages 사이트에 새 내용이 반영됩니다.</p>
           <pre><code>git status
