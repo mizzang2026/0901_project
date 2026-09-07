@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="0831 개발환경 준비와 프로그램 설치 수업 기록입니다.">
+  <title>0831 수업 기록 | Jules의 AI 학습일지</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="학습일지 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
+        <span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./about.html">소개</a>
+        <a href="./0831.html" aria-current="page">0831</a>
+        <a href="./0901.html">0901</a>
+        <a href="./0907.html">0907</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="subpage lesson-page">
+    <section class="lesson-page-heading">
+      <div class="lesson-date" aria-hidden="true"><span>AUG</span><strong>31</strong></div>
+      <div>
+        <p class="eyebrow">LEARNING LOG · DAY 01</p>
+        <h1>AI 웹 개발<br>학습 기록</h1>
+        <p>개발 작업 공간부터 AI 코딩 에이전트까지, 웹 개발을 시작하기 위해 알아야 할 도구와 기술의 관계를 정리했습니다.</p>
+      </div>
+    </section>
+
+    <section class="lesson-article" aria-label="0831 수업 내용">
+      <article class="article-block">
+        <span class="article-number">01</span>
+        <div>
+          <h2>VS Code — 개발 작업 공간</h2>
+          <p><strong>VS Code(Visual Studio Code)</strong>는 코드를 작성하고 프로젝트 파일을 관리하는 개발 도구입니다.</p>
+          <p>쉽게 말하면 <strong>프로그램이나 웹사이트를 만드는 작업실</strong>이라고 생각하면 됩니다.</p>
+          <p>코드를 작성하는 것뿐 아니라 프로젝트 파일을 관리하고, 터미널을 열어 필요한 명령어를 실행할 수도 있습니다.</p>
+          <a class="resource-link" href="https://code.visualstudio.com/download" target="_blank" rel="noopener noreferrer">
+            VS Code 공식 다운로드 <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">02</span>
+        <div>
+          <h2>Terminal — 명령어를 입력하는 공간</h2>
+          <p><strong>터미널(Terminal)</strong>은 컴퓨터에게 명령을 직접 입력하는 공간입니다. Windows에서는 대표적으로 <strong>CMD(Command Prompt)</strong>와 <strong>PowerShell</strong>을 사용할 수 있습니다.</p>
+          <p>VS Code에서 터미널을 열면 기본 설정에 따라 PowerShell이나 CMD가 실행됩니다.</p>
+          <ul class="term-list">
+            <li><strong>Terminal</strong><span>명령어를 입력하는 공간</span></li>
+            <li><strong>CMD</strong><span>Windows의 전통적인 명령 환경</span></li>
+            <li><strong>PowerShell</strong><span>Windows의 좀 더 강력한 명령 환경</span></li>
+          </ul>
+          <p class="inline-note">즉, VS Code 안에서도 CMD나 PowerShell을 이용해 명령을 실행할 수 있습니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">03</span>
+        <div>
+          <h2>HTML → JavaScript → React → Next.js</h2>
+          <p>웹 개발 기술은 서로 따로 떨어져 있는 것이 아니라 연결되어 있습니다.</p>
+          <div class="tech-flow" aria-label="웹 개발 기술의 확장 순서">
+            <div><strong>HTML</strong><span>웹페이지의 기본 구조</span></div>
+            <i aria-hidden="true">→</i>
+            <div><strong>JavaScript</strong><span>웹페이지의 동작과 기능</span></div>
+            <i aria-hidden="true">→</i>
+            <div><strong>React</strong><span>컴포넌트 단위의 화면 조립</span></div>
+            <i aria-hidden="true">→</i>
+            <div><strong>Next.js</strong><span>React 기반 웹서비스 개발</span></div>
+          </div>
+          <div class="topic-grid">
+            <section><h3>HTML</h3><p>글, 이미지, 버튼 등 화면에 무엇을 보여줄지 구성합니다.</p></section>
+            <section><h3>JavaScript</h3><p>버튼 클릭, 검색, 데이터 처리처럼 사용자의 행동에 반응하도록 만듭니다.</p></section>
+            <section><h3>React</h3><p>화면을 작은 컴포넌트로 만들고 조립하여 복잡한 화면을 효율적으로 관리합니다.</p></section>
+            <section><h3>Next.js</h3><p>React를 기반으로 실제 웹사이트와 웹서비스를 편리하게 만드는 프레임워크입니다.</p></section>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">04</span>
+        <div>
+          <h2>Node.js — JavaScript 실행 환경</h2>
+          <p><strong>Node.js</strong>는 웹브라우저 밖에서도 JavaScript를 실행할 수 있게 해주는 프로그램입니다.</p>
+          <p>Node.js를 설치하면 패키지 관리 도구인 <strong>npm도 함께 설치</strong>됩니다. 따라서 npm이나 Codex CLI를 사용하려면 Node.js를 먼저 설치해야 합니다.</p>
+          <div class="install-steps">
+            <ol>
+              <li>Node.js 공식 다운로드 페이지를 엽니다.</li>
+              <li>안정적으로 오래 지원되는 <strong>LTS 버전</strong>을 선택해 설치 파일을 받습니다.</li>
+              <li>다운로드한 설치 파일을 실행하고 기본 설정으로 설치합니다.</li>
+              <li>VS Code와 터미널을 다시 연 뒤 설치 여부를 확인합니다.</li>
+            </ol>
+          </div>
+          <a class="resource-link" href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer">
+            Node.js 공식 다운로드 <span aria-hidden="true">↗</span>
+          </a>
+          <div class="command-list">
+            <div><code>node --version</code><span>설치된 Node.js 버전을 확인합니다.</span></div>
+            <div><code>npm --version</code><span>함께 설치된 npm 버전을 확인합니다.</span></div>
+          </div>
+          <p class="inline-note">버전 번호가 표시되면 Node.js와 npm이 정상적으로 설치된 것입니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>npm — 필요한 패키지를 설치하고 관리</h2>
+          <p><strong>npm</strong>은 개발에 필요한 <strong>패키지(package)</strong>를 설치하고 관리하는 도구입니다. 이미 만들어진 여러 패키지를 가져와 사용할 수 있어 모든 기능을 처음부터 직접 만들 필요가 없습니다.</p>
+          <div class="command-list">
+            <div><code>npm install</code><span>프로젝트에 필요한 패키지를 설치합니다.</span></div>
+            <div><code>npm run dev</code><span>개발 중인 Next.js 웹사이트를 내 컴퓨터에서 실행합니다.</span></div>
+          </div>
+          <p class="inline-note">쉽게 말하면 npm은 개발에 필요한 프로그램과 부품을 설치해주는 관리자입니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">06</span>
+        <div>
+          <h2>Codex — AI와 함께 코딩하기</h2>
+          <p><strong>Codex는 코딩 작업을 도와주는 AI 에이전트</strong>입니다. 프로젝트의 파일을 살펴보고 코드를 작성하거나 수정하는 작업까지 도와줄 수 있습니다.</p>
+          <ul>
+            <li>“프로필 페이지를 만들어줘.”</li>
+            <li>“버튼을 하나 추가해줘.”</li>
+            <li>“이 코드에서 오류를 찾아줘.”</li>
+            <li>“화면을 모바일에서도 잘 보이게 수정해줘.”</li>
+          </ul>
+          <h3 class="subheading">Codex 설치와 실행</h3>
+          <div class="command-list">
+            <div><code>npm install -g @openai/codex</code><span>Codex CLI를 컴퓨터 전체에서 사용할 수 있도록 설치합니다.</span></div>
+            <div><code>codex</code><span>프로젝트 폴더의 터미널에서 Codex를 실행합니다.</span></div>
+          </div>
+          <dl class="command-breakdown">
+            <div><dt>npm</dt><dd>패키지 관리 도구</dd></div>
+            <div><dt>install</dt><dd>설치</dd></div>
+            <div><dt>-g</dt><dd>Global, 컴퓨터 전체에서 사용하도록 설치</dd></div>
+            <div><dt>@openai/codex</dt><dd>설치할 Codex 패키지</dd></div>
+          </dl>
+          <p class="source-note">Codex CLI 설치·실행 내용은 <a href="https://learn.chatgpt.com/docs/codex/cli" target="_blank" rel="noopener noreferrer">공식 OpenAI 문서</a>를 기준으로 확인했습니다.</p>
+        </div>
+      </article>
+
+      <section class="key-summary" aria-labelledby="summary-title">
+        <p class="eyebrow">TODAY'S KEY POINTS</p>
+        <h2 id="summary-title">오늘의 핵심</h2>
+        <dl>
+          <div><dt>VS Code</dt><dd>개발 작업실</dd></div>
+          <div><dt>Terminal</dt><dd>컴퓨터에게 명령을 내리는 공간</dd></div>
+          <div><dt>HTML</dt><dd>웹페이지의 구조</dd></div>
+          <div><dt>JavaScript</dt><dd>웹페이지의 동작</dd></div>
+          <div><dt>React</dt><dd>화면을 컴포넌트로 만들어 조립</dd></div>
+          <div><dt>Next.js</dt><dd>React 기반 웹서비스 개발 도구</dd></div>
+          <div><dt>Node.js</dt><dd>브라우저 밖에서 JavaScript를 실행하는 환경</dd></div>
+          <div><dt>npm</dt><dd>필요한 패키지 설치·관리</dd></div>
+          <div><dt>Codex</dt><dd>함께 코딩하는 AI 에이전트</dd></div>
+        </dl>
+        <blockquote>VS Code에서 웹 개발 도구를 이용해 프로젝트를 만들고, npm으로 필요한 패키지를 설치하며, Codex AI 에이전트의 도움을 받아 코딩할 수 있다.</blockquote>
+      </section>
+    </section>
+
+    <nav class="page-navigation" aria-label="수업 기록 이동">
+      <a href="./about.html">← 소개</a><a href="./0901.html">0901 수업 →</a>
+    </nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
