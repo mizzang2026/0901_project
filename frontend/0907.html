@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="9월 7일 학습일지: 개발 환경 준비부터 Git 설정, GitHub 업로드, 배포 흐름까지.">
+  <title>0907 수업 기록 | Jules의 AI 학습일지</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js" defer></script>
+  <style>
+    .lesson-0907 .article-block > div { min-width: 0; }
+    .lesson-0907 pre { overflow-x: auto; padding: 22px; border-radius: 14px; color: #eef2ff; background: var(--ink); line-height: 1.8; }
+    .lesson-0907 pre code { font-size: .86rem; }
+    .lesson-0907 h1 { line-height: 1.2; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="학습일지 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
+        <span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./about.html">소개</a><a href="./0831.html">0831</a><a href="./0901.html">0901</a><a href="./0907.html" aria-current="page">0907</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="subpage lesson-page lesson-0907">
+    <section class="lesson-page-heading">
+      <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>07</strong></div>
+      <div>
+        <p class="eyebrow">LEARNING LOG · DAY 03 · 2026.09.07</p>
+        <h1>개발 준비부터<br>GitHub 업로드까지</h1>
+        <p>오늘 대화에서 배운 도구와 명령어를 실제 작업 순서로 정리했습니다. 명령어를 외우기보다, AI에게 요청한 작업이 어떤 의미인지 이해하는 것이 목표입니다.</p>
+        <div class="lesson-tags"><span>개발 환경</span><span>Git &amp; GitHub</span><span>배포</span></div>
+      </div>
+    </section>
+    <section class="lesson-article" aria-label="0907 학습 내용">
+      <article class="article-block">
+        <span class="article-number">01</span><div>
+          <h2>개발 환경 준비하기</h2>
+          <p>새 컴퓨터에서 웹 개발을 시작할 때 따라가기 편한 순서입니다. 반드시 이 순서로 설치해야 하는 것은 아닙니다.</p>
+          <div class="install-steps"><ol>
+            <li><strong>VS Code 설치</strong> — 프로젝트 파일을 열고 코드를 편집하는 도구.</li>
+            <li><strong>Node.js 설치</strong> — 자바스크립트 실행 환경. 패키지 관리 도구인 npm도 함께 설치됩니다.</li>
+            <li><strong>Git 설치</strong> — 코드 변경 기록을 관리하는 도구.</li>
+            <li><strong>GitHub 계정 만들기</strong> — Git 저장소를 온라인에 보관하고 공유하는 서비스.</li>
+            <li><strong>Codex 준비</strong> — 사용할 앱이나 확장 등 이용 형태에 맞춰 설치하고 로그인합니다.</li>
+            <li><strong>프로젝트 폴더 열기</strong> — 새로 만들거나 기존 저장소를 내려받아 개발을 시작합니다.</li>
+          </ol></div>
+          <p class="inline-note">HTML·CSS·JavaScript 파일만으로 된 정적 페이지는 Node.js 없이도 만들고 열어볼 수 있습니다. Node.js는 npm이나 개발 서버 등 프로젝트에 필요한 도구를 사용할 때 준비합니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">02</span><div>
+          <h2>Git과 GitHub 구분하기</h2>
+          <div class="topic-grid"><section><h3>Git</h3><p>내 컴퓨터에서 코드의 변경 기록을 관리합니다. 커밋은 선택한 변경 사항을 기록하는 작업입니다.</p></section><section><h3>GitHub</h3><p>Git 저장소를 온라인에 보관합니다. 다른 사람과 공유하거나 다른 컴퓨터에서 이어서 작업할 수 있습니다.</p></section></div>
+          <p><strong>저장소(repository)</strong>는 프로젝트 파일과 Git 변경 기록을 관리하는 단위입니다. 내 컴퓨터의 저장소는 로컬 저장소, GitHub 등에 있는 저장소는 원격 저장소라고 부릅니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">03</span><div>
+          <h2>git config — 작성자 정보 설정</h2>
+          <p>커밋에 기록할 이름과 이메일을 설정합니다. 아래 예시의 이름과 이메일은 내 정보로 바꿉니다.</p>
+          <pre><code>git config --global user.name "내 이름"
+git config --global user.email "내 이메일"</code></pre>
+          <p><code>--global</code>은 현재 컴퓨터 사용자 계정의 기본 설정입니다. 특정 프로젝트에만 적용하려면 그 프로젝트 폴더에서 <code>--global</code>을 빼고 실행합니다.</p>
+          <pre><code>git config user.name
+git config user.email
+git config --list</code></pre>
+          <p class="inline-note">이름과 이메일은 커밋 작성자 정보입니다. GitHub 로그인이나 업로드 권한은 별도로 인증해야 합니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">04</span><div>
+          <h2>프로젝트 시작하기</h2>
+          <h3 class="subheading">기존 저장소가 있으면 git clone</h3>
+          <p><code>git clon</code>이 아니라 <strong>git clone</strong>. 다른 사람의 프로젝트뿐 아니라 내 프로젝트도 코드와 변경 기록을 함께 내려받습니다.</p>
+          <pre><code>git clone https://github.com/사용자명/저장소명.git
+cd 저장소명</code></pre>
+          <p>주소는 실제 저장소 주소로 바꿉니다. 현재 위치에 저장소 폴더가 만들어집니다. 비공개 저장소는 접근 권한이 필요하고, 로컬에서 수정하는 것만으로 원격 원본이 바뀌지는 않습니다.</p>
+          <h3 class="subheading">새 프로젝트라면 git init</h3>
+          <p>새 프로젝트 폴더에서 Git 관리를 시작합니다. clone으로 내려받은 프로젝트는 이미 Git 저장소이므로 다시 초기화할 필요가 없습니다.</p>
+          <pre><code>git init</code></pre>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">05</span><div>
+          <h2>변경 확인 → 기록 → 업로드</h2>
+          <div class="command-list">
+            <div><code>git status</code><span>변경 파일과 커밋 준비 상태 확인</span></div>
+            <div><code>git diff</code><span>아직 스테이징하지 않은, 추적 중인 파일의 변경 내용 확인</span></div>
+            <div><code>git add .</code><span>현재 폴더와 하위 폴더의 변경 사항을 커밋 대상으로 선택</span></div>
+            <div><code>git diff --staged</code><span>커밋에 포함할 변경 내용 확인</span></div>
+            <div><code>git commit -m "변경 내용 설명"</code><span>선택한 변경 사항을 로컬 기록으로 저장</span></div>
+            <div><code>git push</code><span>원격 연결과 추적 설정이 된 브랜치의 커밋 업로드</span></div>
+            <div><code>git pull</code><span>원격 변경 사항을 가져와 현재 브랜치에 통합</span></div>
+          </div>
+          <p><code>git diff</code>에는 새로 만든 미추적 파일의 내용이 표시되지 않으므로 <code>git status</code>와 파일 내용도 함께 확인합니다. <code>git pull</code>은 다른 곳에서 작업한 내용을 받을 때 사용하며 충돌이 생기면 해결해야 합니다.</p>
+          <h3 class="subheading">새 저장소를 GitHub에 처음 올릴 때</h3>
+          <p>GitHub에 README 등을 추가하지 않은 빈 저장소를 만든 뒤, <code>git init</code>을 마친 프로젝트 폴더에서 실행합니다. 이미 clone한 저장소는 보통 origin이 연결되어 있습니다.</p>
+          <pre><code>git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/사용자명/저장소명.git
+git push -u origin main</code></pre>
+          <p><code>origin</code>은 원격 저장소의 별명이고, <code>-u</code>는 이후 간단히 <code>git push</code>할 수 있도록 추적 관계를 설정합니다. 업로드에는 인증과 쓰기 권한이 필요합니다.</p>
+          <p class="inline-note">실제 비밀번호나 API 키가 들어 있는 .env 파일은 git add 전에 .gitignore에 등록합니다. 이미 Git이 추적 중인 파일은 .gitignore에 적는 것만으로 제외되지 않습니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">06</span><div>
+          <h2>샌드박스 승인 메시지 이해하기</h2>
+          <blockquote>“Git 설정 파일 변경이 차단되었습니다. GitHub 로그인 정보를 Git 업로드에 연결하도록 허용하시겠어요?”</blockquote>
+          <p>샌드박스는 도구가 접근하거나 변경할 수 있는 범위를 제한합니다. 이 메시지는 Git 인증 관련 설정 변경이 그 범위에서 차단되어 허용을 요청한다는 뜻입니다.</p>
+          <p><strong>설정 변경을 허용하는 것 자체가 코드 업로드는 아닙니다.</strong> 정확히 어느 파일의 어떤 설정을 바꾸는지는 함께 표시된 명령어를 확인해야 합니다. 이 문구만으로 구체적인 변경 내용을 단정할 수는 없습니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">07</span><div>
+          <h2>필요한 기능 연결하고 배포하기</h2>
+          <div class="topic-grid"><section><h3>Supabase</h3><p>데이터베이스나 회원가입·로그인 같은 기능을 붙일 때 사용하는 서비스입니다. 오늘 헷갈렸던 철자는 Superbase가 아니라 Supabase!</p></section><section><h3>Vercel</h3><p>웹 프로젝트를 배포해 다른 사람도 접속할 수 있는 주소로 공개할 때 사용하는 서비스입니다.</p></section></div>
+          <p>프로젝트를 만들고 확인한 뒤 GitHub에 저장하고, 필요하면 Supabase를 연결하고 Vercel로 배포합니다. 단순한 학습일지에는 데이터베이스가 필수는 아닙니다.</p>
+          <p class="inline-note">오늘은 각 서비스의 역할과 작업 흐름을 배웠습니다. 이 기록은 실제 연결이나 배포가 완료되었다는 뜻은 아닙니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">08</span><div>
+          <h2>AI에게 작업 요청하기</h2>
+          <p>명령어를 모두 외울 필요는 없습니다. 하고 싶은 작업을 설명하고, 어떤 파일과 기록이 바뀌는지 확인하면 됩니다.</p>
+          <div class="prompt-examples"><p>“이 GitHub 저장소를 현재 작업 폴더에 내려받아줘.”</p><p>“변경 내용을 확인하고 커밋한 다음 GitHub에 올려줘.”</p><p>“0907.html 페이지를 만들고 오늘 배운 내용을 순서대로 정리해줘.”</p></div>
+        </div>
+      </article>
+<section class="key-summary" aria-labelledby="summary-title">
+        <p class="eyebrow">TODAY'S KEY POINTS</p><h2 id="summary-title">오늘 기억할 흐름</h2>
+        <p>개발 환경 준비 → 프로젝트 시작 → 변경 확인 → 커밋 → GitHub 업로드 → 필요한 기능 연결 → 배포</p>
+        <blockquote>명령어를 외우는 것보다, 내가 요청한 작업이 무엇을 바꾸는지 이해하고 결과를 확인하기.</blockquote>
+      </section>
+    </section>
+    <nav class="page-navigation" aria-label="수업 기록 이동"><a href="./0901.html">← 0901 수업</a><a href="./index.html">학습일지 홈 ↑</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
