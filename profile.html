@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jules의 기록 블로그 사용자 프로필 페이지입니다."><title>프로필 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./index.html">홈</a>
+        <a href="./posts.html">게시글</a>
+        <div class="nav-dropdown"><button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button><div class="nav-submenu"><a href="./0831.html">0831 · 개발 환경</a><a href="./0901.html">0901 · 프로필 제작</a><a href="./0907.html">0907 · GitHub</a><a href="./0908.html">0908 · 블로그와 DB</a></div></div>
+        <a href="./profile.html" aria-current="page">프로필</a>
+        <a href="./login.html">로그인</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="account-page">
+    <section class="content-heading"><p class="eyebrow">MY PROFILE</p><h1>프로필</h1><p>작성자 정보와 블로그 활동을 한곳에서 확인합니다.</p></section>
+    <section class="profile-card">
+      <div class="profile-avatar" aria-hidden="true">J</div>
+      <div><h2>Jules</h2><p>AI와 웹 개발을 배우고, 이해한 내용을 날짜별로 기록합니다.</p><div class="profile-stats"><span><strong>4</strong>학습기록</span><span><strong>1</strong>작성 중</span></div></div>
+    </section>
+    <section class="post-section" aria-labelledby="my-posts"><div class="post-section-heading"><div><p class="eyebrow">MY POSTS</p><h2 id="my-posts">내 게시글</h2></div><a class="button button-primary" href="./write.html">새 글 작성</a></div>
+      <div class="empty-state"><p>작성 기능이 데이터 저장소와 연결되면 이곳에 내가 작성한 글이 표시됩니다.</p></div>
+    </section>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>

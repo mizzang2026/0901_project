@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Google Sheets를 DB처럼 사용하는 방법을 정리한 게시글입니다."><title>게시글 상세 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./index.html">홈</a>
+        <a href="./posts.html" aria-current="page">게시글</a>
+        <div class="nav-dropdown"><button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button><div class="nav-submenu"><a href="./0831.html">0831 · 개발 환경</a><a href="./0901.html">0901 · 프로필 제작</a><a href="./0907.html">0907 · GitHub</a><a href="./0908.html">0908 · 블로그와 DB</a></div></div>
+        <a href="./profile.html">프로필</a>
+        <a href="./login.html">로그인</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="account-page article-view">
+    <article>
+      <header class="content-heading"><p class="eyebrow">DATA · 2026.09.08</p><h1>Google Sheets를<br>DB처럼 연결하기</h1><p>정적 웹사이트에서도 Google Apps Script를 중간 연결 통로로 사용하면 스프레드시트에 데이터를 저장하고 불러올 수 있습니다.</p></header>
+      <div class="article-body"><p>현재 수업에서는 GitHub Pages로 연 웹사이트와 Google 스프레드시트를 함께 준비했습니다.</p><h2>전체 연결 구조</h2><p>사용자가 웹페이지의 입력 폼을 작성하면 JavaScript가 데이터를 Google Apps Script로 전송합니다. Apps Script는 전달받은 값을 스프레드시트의 새로운 행에 저장합니다.</p><h2>다음 단계</h2><p>스프레드시트의 열 구조를 정하고 Apps Script 웹 앱 주소를 발급한 뒤, 게시글 작성 폼과 연결할 예정입니다.</p><p class="inline-note">회원 비밀번호 같은 민감한 정보는 단순 스프레드시트에 그대로 저장하지 않습니다.</p></div>
+    </article>
+    <nav class="page-navigation" aria-label="게시글 이동"><a href="./posts.html">← 게시글 목록</a><a href="./write.html">새 글 작성 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>

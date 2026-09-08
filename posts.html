@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jules의 기록 블로그 게시글 목록입니다."><title>게시글 목록 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./index.html">홈</a>
+        <a href="./posts.html" aria-current="page">게시글</a>
+        <div class="nav-dropdown"><button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button><div class="nav-submenu"><a href="./0831.html">0831 · 개발 환경</a><a href="./0901.html">0901 · 프로필 제작</a><a href="./0907.html">0907 · GitHub</a><a href="./0908.html">0908 · 블로그와 DB</a></div></div>
+        <a href="./profile.html">프로필</a>
+        <a href="./login.html">로그인</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="account-page">
+    <section class="content-heading"><p class="eyebrow">ALL POSTS</p><h1>게시글 목록</h1><p>최근 작성한 블로그 글과 학습기록을 모아봅니다.</p></section>
+    <div class="post-section-heading"><p>전체 4개의 글</p><a class="button button-primary" href="./write.html">글 작성</a></div>
+    <div class="post-grid">
+      <article class="post-card post-card-featured"><a href="./post.html"><div class="post-meta"><time datetime="2026-09-08">2026.09.08</time><span>NEW</span></div><h3>Google Sheets를 DB처럼 연결하기</h3><p>웹페이지와 Google 스프레드시트 사이에서 데이터가 이동하는 구조를 알아봅니다.</p><ul class="post-tags"><li>Google Sheets</li><li>DB</li></ul><strong>게시글 읽기 →</strong></a></article>
+      <article class="post-card"><a href="./0907.html"><div class="post-meta"><time datetime="2026-09-07">2026.09.07</time><span>03</span></div><h3>GitHub로 웹사이트 공개하기</h3><p>Git과 GitHub Pages의 역할과 배포 과정을 정리했습니다.</p><ul class="post-tags"><li>GitHub</li></ul><strong>학습기록 읽기 →</strong></a></article>
+    </div>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
