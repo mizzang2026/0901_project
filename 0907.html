@@ -145,6 +145,22 @@ git push</code></pre>
         </div>
       </article>
 
+      <article class="article-block">
+        <span class="article-number">08</span><div>
+          <h2>GitHub 웹 화면에서 처음 공개하기</h2>
+          <p><code>깃허브 설정.pdf</code>는 Git 명령어를 사용하지 않고 GitHub 웹사이트에서 HTML 파일을 올려 Pages로 공개하는 과정을 다음과 같이 안내합니다.</p>
+          <div class="install-steps"><ol>
+            <li><a href="https://github.com/">GitHub</a>에 접속해 회원가입하거나 로그인합니다.</li>
+            <li>새 저장소를 만들고 <strong>Repository name</strong>을 자유롭게 입력한 뒤 공개 범위를 <strong>Public</strong>으로 선택합니다.</li>
+            <li>저장소에서 <strong>Uploading an existing file</strong>을 눌러 첫 화면으로 사용할 <code>index.html</code>을 업로드하고 저장합니다.</li>
+            <li><strong>Settings → Pages</strong>로 이동하여 배포 브랜치를 <strong>None</strong>에서 <strong>main</strong>으로 바꾸고 저장합니다.</li>
+            <li><strong>Actions</strong> 메뉴에서 배포 진행 상태를 확인합니다. 표시가 초록색으로 바뀌면 업로드와 배포가 끝난 것입니다.</li>
+            <li>Pages 설정 화면의 <strong>Visit site</strong>를 눌러 공개된 웹페이지로 이동하고, 표시된 웹 주소를 확인합니다.</li>
+          </ol></div>
+          <p class="inline-note">첫 화면 파일 이름은 <code>index.html</code>로 작성해야 기본 주소에서 바로 열립니다. 파일을 수정한 뒤 다시 업로드하거나 Git으로 push하면 Pages가 새 버전을 다시 배포합니다.</p>
+        </div>
+      </article>
+
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S KEY POINTS</p><h2 id="summary-title">오늘 배운 흐름</h2>
         <dl>
@@ -152,6 +168,7 @@ git push</code></pre>
           <div><dt>Git</dt><dd>파일 변경 내용을 로컬에 기록</dd></div>
           <div><dt>GitHub</dt><dd>프로젝트와 커밋을 온라인에 보관</dd></div>
           <div><dt>GitHub Pages</dt><dd>정적 웹사이트를 실제 주소로 공개</dd></div>
+          <div><dt>웹 설정 순서</dt><dd>Public 저장소 생성 → index.html 업로드 → main 브랜치로 Pages 배포</dd></div>
         </dl>
         <blockquote>만들고 → 확인하고 → 기록하고 → 올리고 → 웹사이트로 공개한다.</blockquote>
       </section>
