@@ -31,11 +31,9 @@
     <section class="lesson-page-heading"><div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>08</strong></div><div><p class="eyebrow">LEARNING LOG · DAY 04 · 2026.09.08</p><h1>개인 블로그 재구성과<br>DB 연동 준비</h1><p>GitHub Pages와 Google 스프레드시트를 열고 데이터 연동을 준비하면서, 기존 개인 프로필 사이트를 게시글 중심의 블로그 구조로 변경했습니다.</p><div class="lesson-tags"><span>Blog</span><span>Google Sheets</span><span>DB</span><span>Codex</span></div></div></section>
     <section class="lesson-article" aria-label="0908 학습 내용">
       <article class="article-block"><span class="article-number">01</span><div><h2>Google Sheets를 DB처럼 사용하기</h2><p>GitHub Pages는 정적 웹사이트이므로 자체적으로 데이터를 저장할 서버가 없습니다. 수업에서는 Google 스프레드시트를 간단한 데이터 저장소처럼 사용하고 Google Apps Script를 연결 통로로 활용할 예정입니다.</p><div class="process-flow"><span>웹페이지 입력</span><i>→</i><span>Apps Script</span><i>→</i><span>Google Sheets 저장</span><i>→</i><span>웹페이지 조회</span></div></div></article>
-      <article class="article-block"><span class="article-number">02</span><div><h2>모델과 추론 수준</h2><p><code>gpt-5.6-sol</code>은 모델 이름이고, <code>low</code>와 <code>medium</code>은 답변 전에 추론에 들이는 노력 수준입니다. Low는 빠른 작업에, Medium은 더 복잡하고 꼼꼼한 판단에 적합합니다.</p></div></article>
-      <article class="article-block"><span class="article-number">03</span><div><h2>프로필 사이트를 블로그로 변경</h2><p>홈 화면을 자기소개 중심에서 최근 게시글 중심으로 바꾸고, 기존 날짜별 페이지는 <strong>학습기록</strong> 하위 메뉴에 모았습니다.</p><div class="topic-grid"><section><h3>블로그 홈</h3><p>최근 글, 글 요약, 주제 태그를 먼저 보여줍니다.</p></section><section><h3>학습기록 메뉴</h3><p>0831, 0901, 0907, 0908 기록을 날짜순으로 찾을 수 있습니다.</p></section></div><p class="inline-note">아직 공통 메뉴 파일을 분리하는 방법은 배우지 않았으므로, 같은 메뉴를 각 HTML에 직접 넣었습니다. 메뉴 순서는 홈 → 프로필 → 로그인 → 학습기록이며 게시글 메뉴는 제외했습니다.</p></div></article>
-      <article class="article-block"><span class="article-number">04</span><div><h2>블로그 기본 화면 추가</h2><p>앞으로 데이터 연동에 사용할 회원가입, 로그인, 프로필, 게시글 목록, 게시글 상세, 게시글 작성 화면을 먼저 구성했습니다.</p><p class="inline-note">현재는 화면 구조를 만든 단계입니다. 실제 저장과 로그인 처리는 Google Sheets 및 Apps Script 연동 후 구현합니다.</p></div></article>
+      <article class="article-block"><span class="article-number">02</span><div><h2>블로그 기본 화면 추가</h2><p>앞으로 데이터 연동에 사용할 회원가입, 로그인, 프로필, 게시글 목록, 게시글 상세, 게시글 작성 화면을 먼저 구성했습니다.</p><p class="inline-note">현재는 화면 구조를 만든 단계입니다. 실제 저장과 로그인 처리는 Google Sheets 및 Apps Script 연동 후 구현합니다.</p></div></article>
       <article class="article-block">
-        <span class="article-number">05</span>
+        <span class="article-number">03</span>
         <div>
           <h2>Google 스프레드시트와 Apps Script 준비</h2>
           <p>웹사이트에서 사용할 데이터를 저장하기 위해 Google 스프레드시트를 새로 만들고, 용도를 알아보기 쉽도록 문서 이름을 변경했습니다.</p>
@@ -48,6 +46,58 @@
             </ol>
           </div>
           <p class="inline-note">Google Apps Script는 웹페이지에서 받은 데이터를 스프레드시트에 저장하거나, 저장된 데이터를 다시 웹페이지로 전달하는 중간 연결 역할을 합니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">04</span>
+        <div>
+          <h2>Google 스프레드시트 ID 확인</h2>
+          <p>Apps Script에서 특정 스프레드시트를 지정하려면 문서 URL에 포함된 고유 ID를 확인합니다.</p>
+          <pre><code>https://docs.google.com/spreadsheets/d/스프레드시트_ID/edit</code></pre>
+          <p>URL에서 <code>/d/</code>와 <code>/edit</code> 사이의 문자열이 스프레드시트 ID입니다. Apps Script에서는 다음과 같이 사용할 수 있습니다.</p>
+          <pre><code>const spreadsheet = SpreadsheetApp.openById('스프레드시트_ID');</code></pre>
+          <p class="inline-note"><strong>보안 주의:</strong> 실제 ID나 배포 주소 같은 특정 키 값은 학습기록, 공개 GitHub 저장소, 화면 캡처에 그대로 남기지 않습니다. 스프레드시트 공유 권한도 필요한 범위로 제한하고, 비밀번호·인증 토큰 같은 민감한 정보는 시트에 저장하지 않습니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>Apps Script를 웹 앱으로 공개하기</h2>
+          <p>GitHub Pages에서 Apps Script로 회원가입과 로그인 요청을 보낼 수 있도록 스크립트를 웹 앱 형태로 배포합니다.</p>
+          <div class="install-steps">
+            <ol>
+              <li>Apps Script 오른쪽 위의 <strong>배포 → 새 배포</strong>를 선택합니다.</li>
+              <li>배포 유형에서 <strong>웹 앱</strong>을 선택합니다.</li>
+              <li>실행 사용자를 <strong>나</strong>로 설정합니다.</li>
+              <li>액세스 권한을 <strong>모든 사용자</strong>로 설정합니다.</li>
+              <li><strong>배포</strong>를 누른 뒤 <strong>액세스 승인</strong>을 선택합니다.</li>
+              <li>사용할 Google 계정을 선택합니다.</li>
+              <li>Google의 확인되지 않은 앱 안내가 나오면 <strong>고급</strong>을 누릅니다.</li>
+              <li>본인이 만든 프로젝트가 맞는지 이름을 확인하고 <strong>Go to DB(안전하지 않음)</strong>를 선택합니다.</li>
+              <li>요청하는 권한을 확인한 뒤 <strong>허용</strong>을 누릅니다.</li>
+              <li>배포가 완료되면 발급된 웹 앱 URL을 확인합니다.</li>
+            </ol>
+          </div>
+          <p class="inline-note"><strong>승인 화면 주의:</strong> <strong>Go to DB</strong>는 현재 직접 만든 Apps Script 프로젝트 이름이 DB이기 때문에 선택한 항목입니다. 출처를 모르는 다른 앱에서 같은 경고가 나오면 진행하지 않습니다.</p>
+          <p class="inline-note"><strong>공개 범위 주의:</strong> 모든 사용자 설정은 스프레드시트 문서 자체를 공개한다는 뜻이 아니라, 웹 앱 주소로 누구나 요청을 보낼 수 있게 한다는 뜻입니다. 따라서 서버 코드에서 입력값 검사와 접근 권한 처리가 필요하며 실제 배포 URL은 공개 학습기록에 적지 않습니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">06</span>
+        <div>
+          <h2>첫 번째 웹 앱 배포와 회원 기능 연결</h2>
+          <p>Apps Script의 액세스 권한을 승인하고 버전 1 웹 앱 배포를 완료했습니다. 발급된 <code>/exec</code> 주소를 블로그의 회원가입·로그인 폼 JavaScript에 연결했습니다.</p>
+          <div class="process-flow"><span>가입·로그인 입력</span><i>→</i><span>웹 앱 URL 요청</span><i>→</i><span>Apps Script 처리</span><i>→</i><span>결과 표시</span></div>
+          <p class="inline-note">배포 ID와 실제 웹 앱 URL은 학습기록 본문에 적지 않습니다. 브라우저에서 호출하는 웹 앱 주소는 개발자 도구에서 확인될 수 있으므로, 보안은 주소를 숨기는 방식이 아니라 서버의 입력 검증과 권한 처리로 구성해야 합니다.</p>
+        </div>
+      </article>
+      <article class="article-block">
+        <span class="article-number">07</span>
+        <div>
+          <h2>배포된 웹 앱 연결 테스트</h2>
+          <p>배포된 웹 앱 URL에 GET 요청을 보내 <strong>Apps Script 연결이 정상입니다</strong>라는 응답을 확인했습니다. 잘못된 회원가입 정보도 서버에서 거부하여 입력 검사가 동작하는 것을 확인했습니다.</p>
+          <div class="topic-grid"><section><h3>정상 확인</h3><p>기본 연결 응답과 회원가입의 이름·이메일·비밀번호 검증이 정상적으로 실행되었습니다.</p></section><section><h3>추가 확인</h3><p>존재하지 않는 계정의 로그인 테스트에서 서버 오류가 반환되어 Users와 Sessions 시트 생성 여부를 확인해야 합니다.</p></section></div>
+          <div class="install-steps"><ol><li>Apps Script 편집기에서 함수 목록의 <code>setup</code>을 선택합니다.</li><li><strong>실행</strong>을 누르고 필요한 권한을 승인합니다.</li><li>스프레드시트 아래쪽에 <strong>Users</strong>와 <strong>Sessions</strong> 탭이 만들어졌는지 확인합니다.</li><li>필요하면 새 버전으로 웹 앱을 다시 배포한 뒤 회원가입과 로그인을 재시험합니다.</li></ol></div>
         </div>
       </article>
     </section>

@@ -30,13 +30,13 @@
   <main id="main-content" class="account-page">
     <section class="content-heading"><p class="eyebrow">JOIN THE BLOG</p><h1>회원가입</h1><p>새 계정을 만들고 블로그 활동을 시작하세요.</p></section>
     <div class="form-layout">
-      <form class="form-card" action="#" method="post" data-demo-form>
+      <form id="signup-form" class="form-card" action="#" method="post">
         <div class="form-field"><label for="signup-name">이름</label><input id="signup-name" name="name" type="text" autocomplete="name" required></div>
         <div class="form-field"><label for="signup-email">이메일</label><input id="signup-email" name="email" type="email" autocomplete="email" required></div>
         <div class="form-field"><label for="signup-password">비밀번호</label><input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" required><p class="form-help">영문과 숫자를 포함해 8자 이상 입력하세요.</p></div>
         <div class="form-field"><label for="signup-confirm">비밀번호 확인</label><input id="signup-confirm" name="password-confirm" type="password" autocomplete="new-password" minlength="8" required></div>
         <button class="button button-primary" type="submit">계정 만들기</button>
-        <p class="form-help form-status" role="status"></p><p class="auth-switch">이미 계정이 있나요? <a href="./login.html">로그인</a></p>
+        <p class="form-help form-status" role="status" aria-live="polite"></p><p class="auth-switch">이미 계정이 있나요? <a href="./login.html">로그인</a></p>
       </form>
       <aside class="side-note"><h2>연동 준비 중</h2><p>현재는 화면 구조만 완성된 상태입니다. Google Sheets와 Apps Script를 연결한 뒤 실제 회원 정보 저장 기능을 적용합니다.</p></aside>
     </div>
