@@ -13,10 +13,17 @@
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
       <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
         <a href="./index.html">홈</a>
-        <a href="./posts.html">게시글</a>
-        <div class="nav-dropdown current"><button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button><div class="nav-submenu"><a href="./0831.html">0831 · 개발 환경</a><a href="./0901.html">0901 · 프로필 제작</a><a href="./0907.html">0907 · GitHub</a><a href="./0908.html" aria-current="page">0908 · 블로그와 DB</a></div></div>
         <a href="./profile.html">프로필</a>
         <a href="./login.html">로그인</a>
+        <div class="nav-dropdown current">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
+          <div class="nav-submenu">
+            <a href="./0831.html">0831 · 개발 환경</a>
+            <a href="./0901.html">0901 · 프로필 제작</a>
+            <a href="./0907.html">0907 · GitHub</a>
+            <a href="./0908.html" aria-current="page">0908 · 블로그와 DB</a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -25,8 +32,24 @@
     <section class="lesson-article" aria-label="0908 학습 내용">
       <article class="article-block"><span class="article-number">01</span><div><h2>Google Sheets를 DB처럼 사용하기</h2><p>GitHub Pages는 정적 웹사이트이므로 자체적으로 데이터를 저장할 서버가 없습니다. 수업에서는 Google 스프레드시트를 간단한 데이터 저장소처럼 사용하고 Google Apps Script를 연결 통로로 활용할 예정입니다.</p><div class="process-flow"><span>웹페이지 입력</span><i>→</i><span>Apps Script</span><i>→</i><span>Google Sheets 저장</span><i>→</i><span>웹페이지 조회</span></div></div></article>
       <article class="article-block"><span class="article-number">02</span><div><h2>모델과 추론 수준</h2><p><code>gpt-5.6-sol</code>은 모델 이름이고, <code>low</code>와 <code>medium</code>은 답변 전에 추론에 들이는 노력 수준입니다. Low는 빠른 작업에, Medium은 더 복잡하고 꼼꼼한 판단에 적합합니다.</p></div></article>
-      <article class="article-block"><span class="article-number">03</span><div><h2>프로필 사이트를 블로그로 변경</h2><p>홈 화면을 자기소개 중심에서 최근 게시글 중심으로 바꾸고, 기존 날짜별 페이지는 <strong>학습기록</strong> 하위 메뉴에 모았습니다.</p><div class="topic-grid"><section><h3>블로그 홈</h3><p>최근 글, 글 요약, 주제 태그를 먼저 보여줍니다.</p></section><section><h3>학습기록 메뉴</h3><p>0831, 0901, 0907, 0908 기록을 날짜순으로 찾을 수 있습니다.</p></section></div></div></article>
+      <article class="article-block"><span class="article-number">03</span><div><h2>프로필 사이트를 블로그로 변경</h2><p>홈 화면을 자기소개 중심에서 최근 게시글 중심으로 바꾸고, 기존 날짜별 페이지는 <strong>학습기록</strong> 하위 메뉴에 모았습니다.</p><div class="topic-grid"><section><h3>블로그 홈</h3><p>최근 글, 글 요약, 주제 태그를 먼저 보여줍니다.</p></section><section><h3>학습기록 메뉴</h3><p>0831, 0901, 0907, 0908 기록을 날짜순으로 찾을 수 있습니다.</p></section></div><p class="inline-note">아직 공통 메뉴 파일을 분리하는 방법은 배우지 않았으므로, 같은 메뉴를 각 HTML에 직접 넣었습니다. 메뉴 순서는 홈 → 프로필 → 로그인 → 학습기록이며 게시글 메뉴는 제외했습니다.</p></div></article>
       <article class="article-block"><span class="article-number">04</span><div><h2>블로그 기본 화면 추가</h2><p>앞으로 데이터 연동에 사용할 회원가입, 로그인, 프로필, 게시글 목록, 게시글 상세, 게시글 작성 화면을 먼저 구성했습니다.</p><p class="inline-note">현재는 화면 구조를 만든 단계입니다. 실제 저장과 로그인 처리는 Google Sheets 및 Apps Script 연동 후 구현합니다.</p></div></article>
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>Google 스프레드시트와 Apps Script 준비</h2>
+          <p>웹사이트에서 사용할 데이터를 저장하기 위해 Google 스프레드시트를 새로 만들고, 용도를 알아보기 쉽도록 문서 이름을 변경했습니다.</p>
+          <div class="install-steps">
+            <ol>
+              <li>Google 스프레드시트를 새로 생성합니다.</li>
+              <li>왼쪽 위의 문서 제목을 눌러 스프레드시트 이름을 변경합니다.</li>
+              <li>상단 메뉴에서 <strong>확장 프로그램 → Apps Script</strong>를 선택합니다.</li>
+              <li>열린 Apps Script 편집기에서 웹페이지와 스프레드시트를 연결할 코드를 작성할 준비를 합니다.</li>
+            </ol>
+          </div>
+          <p class="inline-note">Google Apps Script는 웹페이지에서 받은 데이터를 스프레드시트에 저장하거나, 저장된 데이터를 다시 웹페이지로 전달하는 중간 연결 역할을 합니다.</p>
+        </div>
+      </article>
     </section>
     <nav class="page-navigation" aria-label="학습 기록 이동"><a href="./0907.html">← 0907 학습</a><a href="./index.html">블로그 홈 →</a></nav>
   </main>
