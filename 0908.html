@@ -100,6 +100,15 @@
           <div class="install-steps"><ol><li>Apps Script 편집기에서 함수 목록의 <code>setup</code>을 선택합니다.</li><li><strong>실행</strong>을 누르고 필요한 권한을 승인합니다.</li><li>스프레드시트 아래쪽에 <strong>Users</strong>와 <strong>Sessions</strong> 탭이 만들어졌는지 확인합니다.</li><li>필요하면 새 버전으로 웹 앱을 다시 배포한 뒤 회원가입과 로그인을 재시험합니다.</li></ol></div>
         </div>
       </article>
+      <article class="article-block">
+        <span class="article-number">08</span>
+        <div>
+          <h2>회원가입 405 오류 해결</h2>
+          <p>GitHub Pages의 회원가입 버튼을 눌렀을 때 화면이 바뀌며 <strong>405 Not Allowed</strong>가 나타났습니다. 정적 호스팅인 GitHub Pages는 폼의 POST 요청을 직접 처리할 수 없는데, JavaScript가 실행되지 않은 상태에서 폼이 현재 페이지로 제출된 것이 원인이었습니다.</p>
+          <div class="install-steps"><ol><li>회원가입과 로그인 폼의 기본 <code>action</code>을 Apps Script 웹 앱 주소로 지정합니다.</li><li>요청 종류를 구분하도록 숨김 입력값 <code>action=signup</code> 또는 <code>action=login</code>을 추가합니다.</li><li>JavaScript 파일 주소에 버전 값을 붙여 브라우저가 최신 연결 코드를 다시 내려받게 합니다.</li></ol></div>
+          <p class="inline-note">JavaScript가 정상 실행되면 화면을 이동하지 않고 결과 메시지를 표시합니다. JavaScript를 불러오지 못하더라도 폼이 GitHub Pages가 아닌 Apps Script로 전송되어 405 오류를 피할 수 있습니다.</p>
+        </div>
+      </article>
     </section>
     <nav class="page-navigation" aria-label="학습 기록 이동"><a href="./0907.html">← 0907 학습</a><a href="./index.html">블로그 홈 →</a></nav>
   </main>

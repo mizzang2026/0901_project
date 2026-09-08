@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Jules의 기록 블로그 회원가입 페이지입니다."><title>회원가입 | Jules의 기록</title>
-  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js" defer></script>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260908-2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
@@ -30,7 +30,8 @@
   <main id="main-content" class="account-page">
     <section class="content-heading"><p class="eyebrow">JOIN THE BLOG</p><h1>회원가입</h1><p>새 계정을 만들고 블로그 활동을 시작하세요.</p></section>
     <div class="form-layout">
-      <form id="signup-form" class="form-card" action="#" method="post">
+      <form id="signup-form" class="form-card" action="https://script.google.com/macros/s/AKfycbxzp-BvRVx4oqOnGDKVg_vHYoZMJsKyqdGCbPpUYbDE8-q64rQMd3J3qUfZfI05NPzz/exec" method="post">
+        <input type="hidden" name="action" value="signup">
         <div class="form-field"><label for="signup-name">이름</label><input id="signup-name" name="name" type="text" autocomplete="name" required></div>
         <div class="form-field"><label for="signup-email">이메일</label><input id="signup-email" name="email" type="email" autocomplete="email" required></div>
         <div class="form-field"><label for="signup-password">비밀번호</label><input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="8" required><p class="form-help">영문과 숫자를 포함해 8자 이상 입력하세요.</p></div>
