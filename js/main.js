@@ -156,7 +156,7 @@ const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { year: 'numeric'
 function createPostCard(post, featured = false) {
   const article = document.createElement('article');
   article.className = `post-card${featured ? ' post-card-featured' : ''}`;
-  const categoryClasses = { '학습기록': 'category-learning', 'AI 활용': 'category-ai', '웹 개발': 'category-web', '일상': 'category-daily' };
+  const categoryClasses = { 'AI 활용': 'category-ai', 'Q & A': 'category-learning', '입트영': 'category-web', '일 상': 'category-daily' };
   if (categoryClasses[post.category]) article.classList.add(categoryClasses[post.category]);
   const link = document.createElement('a');
   link.href = `./post.html?id=${encodeURIComponent(post.id)}`;
@@ -177,11 +177,11 @@ if (postList) (async () => {
   try {
   const posts = (await postApi('listPosts')).posts;
   document.querySelector('#post-count').textContent = `전체 ${posts.length}개의 글`;
-  const categories = ['학습기록', 'AI 활용', '웹 개발', '일상'];
+  const categories = ['AI 활용', 'Q & A', '입트영', '일 상'];
   categories.forEach((category) => {
     const categoryPosts = posts.filter((post) => post.category === category);
     const section = document.createElement('section'); section.className = 'post-category-section';
-    const categoryClasses = { '학습기록': 'category-learning', 'AI 활용': 'category-ai', '웹 개발': 'category-web', '일상': 'category-daily' };
+    const categoryClasses = { 'AI 활용': 'category-ai', 'Q & A': 'category-learning', '입트영': 'category-web', '일 상': 'category-daily' };
     section.classList.add(categoryClasses[category]);
     const heading = document.createElement('div'); heading.className = 'post-category-heading';
     const title = document.createElement('h2'); title.textContent = category;
