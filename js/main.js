@@ -189,7 +189,7 @@ if (postList) (async () => {
     heading.append(title, count);
     const grid = document.createElement('div'); grid.className = 'post-grid';
     if (!categoryPosts.length) grid.innerHTML = '<div class="empty-state"><p>아직 작성된 글이 없습니다.</p></div>';
-    categoryPosts.forEach((post, index) => grid.append(createPostCard(post, index === 0)));
+    categoryPosts.forEach((post) => grid.append(createPostCard(post)));
     section.append(heading, grid); postList.append(section);
   });
   } catch (error) { postList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; }
@@ -247,7 +247,7 @@ if (profilePostList) (async () => {
     document.querySelector('#profile-post-count').textContent = posts.length;
     profilePostList.innerHTML = '';
     if (!posts.length) profilePostList.innerHTML = '<div class="empty-state"><p>아직 작성한 게시글이 없습니다.</p></div>';
-    posts.forEach((post, index) => profilePostList.append(createPostCard(post, index === 0)));
+    posts.forEach((post) => profilePostList.append(createPostCard(post)));
   } catch (error) {
     profilePostList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`;
   }

@@ -165,6 +165,10 @@ a { color: inherit; }
 .post-card.category-daily { color: var(--ink); background: #fff5ec; border: 1px solid #efd1b7; }
 .post-card:is(.category-learning, .category-ai, .category-web, .category-daily) :is(.post-meta, p) { color: var(--muted); }
 .post-card:is(.category-learning, .category-ai, .category-web, .category-daily) strong { color: var(--blue-dark); }
+.post-category-list .post-card, #profile-post-list .post-card { min-height: 250px; }
+.post-category-list .post-card > a, #profile-post-list .post-card > a { padding: 24px; }
+.post-category-list .post-card h3, #profile-post-list .post-card h3 { margin: 24px 0 10px; font-size: 1.55rem; }
+.post-category-list .post-card > a > p:not(.post-author), #profile-post-list .post-card > a > p:not(.post-author) { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
 .hero, .section, .site-footer {
   width: min(1160px, calc(100% - 40px));
