@@ -45,6 +45,23 @@ window.addEventListener('resize', () => {
 const year = document.querySelector('#current-year');
 if (year) year.textContent = new Date().getFullYear();
 
+const authLink = navigation?.querySelector('a[href="./login.html"]');
+const sessionToken = localStorage.getItem('blogSessionToken');
+
+if (authLink && sessionToken) {
+  authLink.textContent = '로그아웃';
+  authLink.href = '#logout';
+  authLink.removeAttribute('aria-current');
+  authLink.setAttribute('aria-label', '로그아웃');
+
+  authLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    localStorage.removeItem('blogSessionToken');
+    localStorage.removeItem('blogUser');
+    window.location.href = './index.html';
+  });
+}
+
 document.querySelectorAll('[data-demo-form]').forEach((form) => {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
