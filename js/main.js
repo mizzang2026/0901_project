@@ -49,6 +49,19 @@ const authLink = navigation?.querySelector('a[href="./login.html"]');
 const profileLink = navigation?.querySelector('a[href="./profile.html"]');
 const sessionToken = localStorage.getItem('blogSessionToken');
 
+if (navigation && dropdown) {
+  const postsLink = document.createElement('a');
+  postsLink.href = './posts.html';
+  postsLink.textContent = '게시글';
+  navigation.insertBefore(postsLink, dropdown);
+  if (sessionToken) {
+    const writeLink = document.createElement('a');
+    writeLink.href = './write.html';
+    writeLink.textContent = '글쓰기';
+    navigation.insertBefore(writeLink, dropdown);
+  }
+}
+
 if (!sessionToken && profileLink) {
   profileLink.textContent = '회원가입';
   profileLink.href = './signup.html';
@@ -137,3 +150,86 @@ loginForm?.addEventListener('submit', async (event) => {
   if (status) status.textContent = result.message;
   window.setTimeout(() => { window.location.href = './profile.html'; }, 600);
 });
+
+const POSTS_KEY = 'blogPosts';
+const readPosts = () => {
+  try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
+  catch { return []; }
+};
+const savePosts = (posts) => localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+const excerpt = (text, length = 110) => text.length > length ? `${text.slice(0, length)}…` : text;
+const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(value));
+
+function createPostCard(post, featured = false) {
+  const article = document.createElement('article');
+  article.className = `post-card${featured ? ' post-card-featured' : ''}`;
+  const link = document.createElement('a');
+  link.href = `./post.html?id=${encodeURIComponent(post.id)}`;
+  const meta = document.createElement('div'); meta.className = 'post-meta';
+  const time = document.createElement('time'); time.dateTime = post.createdAt; time.textContent = formatDate(post.createdAt);
+  const badge = document.createElement('span'); badge.textContent = featured ? 'NEW' : post.category;
+  meta.append(time, badge);
+  const title = document.createElement('h3'); title.textContent = post.title;
+  const summary = document.createElement('p'); summary.textContent = excerpt(post.content);
+  const more = document.createElement('strong'); more.textContent = '게시글 읽기 →';
+  link.append(meta, title, summary, more); article.append(link);
+  return article;
+}
+
+const postList = document.querySelector('#post-list');
+if (postList) {
+  const posts = readPosts().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+  document.querySelector('#post-count').textContent = `전체 ${posts.length}개의 글`;
+  if (!posts.length) postList.innerHTML = '<div class="empty-state"><p>아직 작성된 게시글이 없습니다.</p></div>';
+  posts.forEach((post, index) => postList.append(createPostCard(post, index === 0)));
+}
+
+const homePostList = document.querySelector('#home-post-list');
+if (homePostList) {
+  const posts = readPosts().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+  if (posts.length) homePostList.querySelector('.post-card-featured')?.classList.remove('post-card-featured');
+  const fragment = document.createDocumentFragment();
+  posts.forEach((post, index) => fragment.append(createPostCard(post, index === 0)));
+  homePostList.prepend(fragment);
+}
+
+const postForm = document.querySelector('#post-form');
+if (postForm) {
+  if (!sessionToken) window.location.replace('./login.html');
+  const editId = new URLSearchParams(location.search).get('id');
+  const existing = readPosts().find((post) => post.id === editId);
+  if (existing) {
+    postForm.elements.id.value = existing.id; postForm.elements.title.value = existing.title;
+    postForm.elements.category.value = existing.category; postForm.elements.content.value = existing.content;
+    document.querySelector('.content-heading h1').textContent = '게시글 수정';
+  }
+  postForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const now = new Date().toISOString(); const posts = readPosts();
+    const id = postForm.elements.id.value || `${Date.now()}`;
+    const old = posts.find((post) => post.id === id);
+    const user = JSON.parse(localStorage.getItem('blogUser') || '{}');
+    const post = { id, title: postForm.elements.title.value.trim(), category: postForm.elements.category.value, content: postForm.elements.content.value.trim(), author: user.name || user.email || '작성자', createdAt: old?.createdAt || now, updatedAt: now };
+    savePosts(old ? posts.map((item) => item.id === id ? post : item) : [post, ...posts]);
+    window.location.href = `./post.html?id=${encodeURIComponent(id)}`;
+  });
+}
+
+const postDetail = document.querySelector('#post-detail');
+if (postDetail) {
+  const id = new URLSearchParams(location.search).get('id'); const post = readPosts().find((item) => item.id === id);
+  if (!post) postDetail.innerHTML = '<div class="empty-state"><p>게시글을 찾을 수 없습니다.</p></div>';
+  else {
+    postDetail.innerHTML = '';
+    const header = document.createElement('header'); header.className = 'content-heading';
+    const meta = document.createElement('p'); meta.className = 'eyebrow'; meta.textContent = `${post.category} · ${formatDate(post.createdAt)} · ${post.author}`;
+    const title = document.createElement('h1'); title.textContent = post.title;
+    const body = document.createElement('div'); body.className = 'article-body post-content'; body.textContent = post.content;
+    header.append(meta, title); postDetail.append(header, body);
+    if (sessionToken) {
+      const actions = document.querySelector('#post-actions');
+      actions.innerHTML = `<a href="./write.html?id=${encodeURIComponent(id)}">수정</a> <button class="text-button" id="delete-post" type="button">삭제</button>`;
+      document.querySelector('#delete-post').addEventListener('click', () => { if (confirm('이 글을 삭제할까요?')) { savePosts(readPosts().filter((item) => item.id !== id)); location.href = './posts.html'; } });
+    }
+  }
+}

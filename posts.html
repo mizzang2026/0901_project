@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Jules의 기록 블로그 게시글 목록입니다."><title>게시글 목록 | Jules의 기록</title>
-  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260914-2" defer></script>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260914-3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
@@ -30,11 +30,8 @@
   </header>
   <main id="main-content" class="account-page">
     <section class="content-heading"><p class="eyebrow">ALL POSTS</p><h1>게시글 목록</h1><p>최근 작성한 블로그 글과 학습기록을 모아봅니다.</p></section>
-    <div class="post-section-heading"><p>전체 4개의 글</p><a class="button button-primary" href="./write.html">글 작성</a></div>
-    <div class="post-grid">
-      <article class="post-card post-card-featured"><a href="./post.html"><div class="post-meta"><time datetime="2026-09-08">2026.09.08</time><span>NEW</span></div><h3>Google Sheets를 DB처럼 연결하기</h3><p>웹페이지와 Google 스프레드시트 사이에서 데이터가 이동하는 구조를 알아봅니다.</p><ul class="post-tags"><li>Google Sheets</li><li>DB</li></ul><strong>게시글 읽기 →</strong></a></article>
-      <article class="post-card"><a href="./0907.html"><div class="post-meta"><time datetime="2026-09-07">2026.09.07</time><span>03</span></div><h3>GitHub로 웹사이트 공개하기</h3><p>Git과 GitHub Pages의 역할과 배포 과정을 정리했습니다.</p><ul class="post-tags"><li>GitHub</li></ul><strong>학습기록 읽기 →</strong></a></article>
-    </div>
+    <div class="post-section-heading"><p id="post-count">게시글을 불러오는 중입니다.</p><a class="button button-primary" href="./write.html">글쓰기</a></div>
+    <div id="post-list" class="post-grid" aria-live="polite"></div>
   </main>
   <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
 </body>
