@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Jules의 기록 블로그 사용자 프로필 페이지입니다."><title>프로필 | Jules의 기록</title>
-  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260914-4" defer></script>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260914-7" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
@@ -31,11 +31,11 @@
   <main id="main-content" class="account-page">
     <section class="content-heading"><p class="eyebrow">MY PROFILE</p><h1>프로필</h1><p>작성자 정보와 블로그 활동을 한곳에서 확인합니다.</p></section>
     <section class="profile-card">
-      <div class="profile-avatar" aria-hidden="true">J</div>
-      <div><h2>Jules</h2><p>AI와 웹 개발을 배우고, 이해한 내용을 날짜별로 기록합니다.</p><div class="profile-stats"><span><strong>4</strong>학습기록</span><span><strong>1</strong>작성 중</span></div></div>
+      <div id="profile-avatar" class="profile-avatar" aria-hidden="true"></div>
+      <div><h2 id="profile-name">사용자 정보를 불러오는 중입니다.</h2><p id="profile-email"></p><div class="profile-stats"><span><strong id="profile-post-count">0</strong>작성한 게시글</span></div></div>
     </section>
     <section class="post-section" aria-labelledby="my-posts"><div class="post-section-heading"><div><p class="eyebrow">MY POSTS</p><h2 id="my-posts">내 게시글</h2></div><a class="button button-primary" href="./write.html">새 글 작성</a></div>
-      <div class="empty-state"><p>작성 기능이 데이터 저장소와 연결되면 이곳에 내가 작성한 글이 표시됩니다.</p></div>
+      <div id="profile-post-list" class="post-grid" aria-live="polite"><div class="empty-state"><p>게시글을 불러오는 중입니다.</p></div></div>
     </section>
   </main>
   <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>

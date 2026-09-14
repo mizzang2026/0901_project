@@ -82,14 +82,6 @@ if (sessionToken && authLink) {
   });
 }
 
-document.querySelectorAll('[data-demo-form]').forEach((form) => {
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const status = form.querySelector('.form-status');
-    if (status) status.textContent = '화면 입력을 확인했습니다. 데이터 저장 기능은 Google Sheets 연결 후 활성화됩니다.';
-  });
-});
-
 async function sendAuthRequest(form, action) {
   const status = form.querySelector('.form-status');
   const submitButton = form.querySelector('[type="submit"]');
@@ -246,3 +238,21 @@ if (postDetail) (async () => { try {
     }
   }
 } catch (error) { postDetail.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; } })();
+
+const profilePostList = document.querySelector('#profile-post-list');
+if (profilePostList) (async () => {
+  if (!sessionToken) { window.location.replace('./login.html'); return; }
+  try {
+    const me = await postApi('me', { token: sessionToken });
+    const posts = (await postApi('listPosts')).posts.filter((post) => post.userId === me.user.id);
+    document.querySelector('#profile-name').textContent = me.user.name;
+    document.querySelector('#profile-email').textContent = me.user.email;
+    document.querySelector('#profile-avatar').textContent = me.user.name.slice(0, 1).toUpperCase();
+    document.querySelector('#profile-post-count').textContent = posts.length;
+    profilePostList.innerHTML = '';
+    if (!posts.length) profilePostList.innerHTML = '<div class="empty-state"><p>아직 작성한 게시글이 없습니다.</p></div>';
+    posts.forEach((post, index) => profilePostList.append(createPostCard(post, index === 0)));
+  } catch (error) {
+    profilePostList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`;
+  }
+})();
