@@ -190,15 +190,6 @@ if (postList) (async () => {
   } catch (error) { postList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; }
 })();
 
-const homePostList = document.querySelector('#home-post-list');
-if (homePostList) (async () => { try {
-  const posts = (await postApi('listPosts')).posts;
-  if (posts.length) homePostList.querySelector('.post-card-featured')?.classList.remove('post-card-featured');
-  const fragment = document.createDocumentFragment();
-  posts.forEach((post, index) => fragment.append(createPostCard(post, index === 0)));
-  homePostList.prepend(fragment);
-} catch (error) { console.error(error); } })();
-
 const postForm = document.querySelector('#post-form');
 if (postForm) {
   if (!sessionToken) window.location.replace('./login.html');
