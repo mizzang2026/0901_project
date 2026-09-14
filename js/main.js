@@ -234,7 +234,7 @@ if (postDetail) (async () => { try {
   else {
     postDetail.innerHTML = '';
     const header = document.createElement('header'); header.className = 'content-heading';
-    const meta = document.createElement('p'); meta.className = 'eyebrow'; meta.textContent = `${post.category} · ${formatDate(post.createdAt)} · ${post.author}`;
+    const meta = document.createElement('p'); meta.className = 'eyebrow'; meta.textContent = `작성자 ${post.author} · ${post.category} · ${formatDate(post.createdAt)}`;
     const title = document.createElement('h1'); title.textContent = post.title;
     const body = document.createElement('div'); body.className = 'article-body post-content'; body.textContent = post.content;
     header.append(meta, title); postDetail.append(header, body);
