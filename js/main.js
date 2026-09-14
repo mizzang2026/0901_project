@@ -46,9 +46,16 @@ const year = document.querySelector('#current-year');
 if (year) year.textContent = new Date().getFullYear();
 
 const authLink = navigation?.querySelector('a[href="./login.html"]');
+const profileLink = navigation?.querySelector('a[href="./profile.html"]');
 const sessionToken = localStorage.getItem('blogSessionToken');
 
-if (authLink && sessionToken) {
+if (!sessionToken && profileLink) {
+  profileLink.textContent = '회원가입';
+  profileLink.href = './signup.html';
+  profileLink.removeAttribute('aria-current');
+}
+
+if (sessionToken && authLink) {
   authLink.textContent = '로그아웃';
   authLink.href = '#logout';
   authLink.removeAttribute('aria-current');
