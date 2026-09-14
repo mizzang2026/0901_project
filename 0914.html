@@ -102,6 +102,27 @@
         </div>
       </article>
 
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>Codex가 멈춘 느낌일 때 확인하기</h2>
+          <p>응답이 느리거나 이전 작업이 끊긴 것처럼 보이면 모델과 세션 상태를 먼저 확인하고, 저장된 작업 세션을 다시 이어갑니다.</p>
+          <div class="command-list">
+            <div><code>/model</code><span>현재 모델을 확인하거나 사용할 모델을 변경합니다.</span></div>
+            <div><code>/status</code><span>현재 세션 설정과 컨텍스트·토큰 사용 상태를 확인합니다.</span></div>
+            <div><code>/resume</code><span>저장된 이전 작업 세션을 찾아 이어서 진행할 때 기억할 명령입니다.</span></div>
+            <div><code>codex resume --last</code><span>터미널에서 가장 최근 Codex 세션을 바로 이어갑니다.</span></div>
+          </div>
+          <h3 class="subheading">기억해 둘 프롬프트</h3>
+          <div class="prompt-examples">
+            <p>“왜 멈춘 것처럼 보이는지 상태를 확인하고, 하던 작업을 계속 진행해줘.”</p>
+            <p>“현재 모델과 세션 상태, 남은 컨텍스트를 확인해줘.”</p>
+            <p>“이전 작업 내용을 확인하고 완료되지 않은 부분부터 이어서 해줘.”</p>
+          </div>
+          <p class="inline-note"><strong>기억:</strong> 새 대화를 시작하기 전에는 <code>/status</code>로 상태를 확인하고, 기존 작업을 이어야 한다면 먼저 세션 재개를 시도합니다.</p>
+        </div>
+      </article>
+
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S GOAL</p>
         <h2 id="summary-title">예시 화면에서 실제로 동작하는 블로그로</h2>
@@ -110,6 +131,7 @@
           <div><dt>게시글</dt><dd>Google Sheets CRUD 완성</dd></div>
           <div><dt>프로필</dt><dd>실제 사용자와 작성 글 표시</dd></div>
           <div><dt>목록</dt><dd>분류별 카드와 상세 연결</dd></div>
+          <div><dt>Codex</dt><dd>모델·상태 확인과 세션 재개</dd></div>
         </dl>
         <blockquote>고정된 예시 화면을 실제 로그인 사용자와 Google Sheets 데이터가 움직이는 블로그로 연결했습니다.</blockquote>
       </section>
