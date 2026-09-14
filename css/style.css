@@ -154,6 +154,17 @@ a { color: inherit; }
 .post-category-heading { margin-bottom: 24px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--line); }
 .post-category-heading h2 { margin: 0 0 14px; font: 400 2rem var(--serif); }
 .post-category-heading span { color: var(--muted); font-size: .82rem; font-weight: 700; }
+.post-author { margin: 0 0 8px !important; color: var(--blue-dark) !important; font-size: .78rem !important; font-weight: 700; }
+.post-category-section.category-learning .post-category-heading { border-color: #69ad7f; }
+.post-category-section.category-ai .post-category-heading { border-color: #8c7bd8; }
+.post-category-section.category-web .post-category-heading { border-color: #5599d6; }
+.post-category-section.category-daily .post-category-heading { border-color: #de9a64; }
+.post-card.category-learning { color: var(--ink); background: #effaf2; border: 1px solid #b9dfc4; }
+.post-card.category-ai { color: var(--ink); background: #f5f1ff; border: 1px solid #d3c8f1; }
+.post-card.category-web { color: var(--ink); background: #eef7ff; border: 1px solid #bedaf0; }
+.post-card.category-daily { color: var(--ink); background: #fff5ec; border: 1px solid #efd1b7; }
+.post-card:is(.category-learning, .category-ai, .category-web, .category-daily) :is(.post-meta, p) { color: var(--muted); }
+.post-card:is(.category-learning, .category-ai, .category-web, .category-daily) strong { color: var(--blue-dark); }
 
 .hero, .section, .site-footer {
   width: min(1160px, calc(100% - 40px));
