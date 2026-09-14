@@ -3,7 +3,7 @@ const navigation = document.querySelector('.navigation');
 const menuLabel = menuButton?.querySelector('.sr-only');
 const dropdown = document.querySelector('.nav-dropdown');
 const dropdownToggle = dropdown?.querySelector('.nav-dropdown-toggle');
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzp-BvRVx4oqOnGDKVg_vHYoZMJsKyqdGCbPpUYbDE8-q64rQMd3J3qUfZfI05NPzz/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8hwlqo8uhicyeuL9Z-LzllfJZRwnrniT_0CTAmazlUwempT1dwFtCjJoWW2mP6upp/exec';
 
 function closeMenu() {
   if (!menuButton || !navigation) return;
@@ -151,12 +151,13 @@ loginForm?.addEventListener('submit', async (event) => {
   window.setTimeout(() => { window.location.href = './profile.html'; }, 600);
 });
 
-const POSTS_KEY = 'blogPosts';
-const readPosts = () => {
-  try { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
-  catch { return []; }
-};
-const savePosts = (posts) => localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+async function postApi(action, params = {}, method = 'GET') {
+  const data = new URLSearchParams({ action, ...params });
+  const response = await fetch(method === 'GET' ? `${APPS_SCRIPT_URL}?${data}` : APPS_SCRIPT_URL, method === 'GET' ? {} : { method: 'POST', body: data });
+  const result = await response.json();
+  if (!result.success) throw new Error(result.message || '요청 처리에 실패했습니다.');
+  return result;
+}
 const excerpt = (text, length = 110) => text.length > length ? `${text.slice(0, length)}…` : text;
 const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(value));
 
@@ -177,47 +178,47 @@ function createPostCard(post, featured = false) {
 }
 
 const postList = document.querySelector('#post-list');
-if (postList) {
-  const posts = readPosts().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+if (postList) (async () => {
+  try {
+  const posts = (await postApi('listPosts')).posts;
   document.querySelector('#post-count').textContent = `전체 ${posts.length}개의 글`;
   if (!posts.length) postList.innerHTML = '<div class="empty-state"><p>아직 작성된 게시글이 없습니다.</p></div>';
   posts.forEach((post, index) => postList.append(createPostCard(post, index === 0)));
-}
+  } catch (error) { postList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; }
+})();
 
 const homePostList = document.querySelector('#home-post-list');
-if (homePostList) {
-  const posts = readPosts().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+if (homePostList) (async () => { try {
+  const posts = (await postApi('listPosts')).posts;
   if (posts.length) homePostList.querySelector('.post-card-featured')?.classList.remove('post-card-featured');
   const fragment = document.createDocumentFragment();
   posts.forEach((post, index) => fragment.append(createPostCard(post, index === 0)));
   homePostList.prepend(fragment);
-}
+} catch (error) { console.error(error); } })();
 
 const postForm = document.querySelector('#post-form');
 if (postForm) {
   if (!sessionToken) window.location.replace('./login.html');
   const editId = new URLSearchParams(location.search).get('id');
-  const existing = readPosts().find((post) => post.id === editId);
-  if (existing) {
+  if (editId) postApi('getPost', { id: editId }).then(({ post: existing }) => {
     postForm.elements.id.value = existing.id; postForm.elements.title.value = existing.title;
     postForm.elements.category.value = existing.category; postForm.elements.content.value = existing.content;
     document.querySelector('.content-heading h1').textContent = '게시글 수정';
-  }
-  postForm.addEventListener('submit', (event) => {
+  }).catch((error) => { postForm.querySelector('.form-status').textContent = error.message; });
+  postForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const now = new Date().toISOString(); const posts = readPosts();
-    const id = postForm.elements.id.value || `${Date.now()}`;
-    const old = posts.find((post) => post.id === id);
-    const user = JSON.parse(localStorage.getItem('blogUser') || '{}');
-    const post = { id, title: postForm.elements.title.value.trim(), category: postForm.elements.category.value, content: postForm.elements.content.value.trim(), author: user.name || user.email || '작성자', createdAt: old?.createdAt || now, updatedAt: now };
-    savePosts(old ? posts.map((item) => item.id === id ? post : item) : [post, ...posts]);
-    window.location.href = `./post.html?id=${encodeURIComponent(id)}`;
+    const status = postForm.querySelector('.form-status'); status.textContent = '저장 중입니다…';
+    try {
+      const id = postForm.elements.id.value;
+      const result = await postApi(id ? 'updatePost' : 'createPost', { token: sessionToken, id, title: postForm.elements.title.value.trim(), category: postForm.elements.category.value, content: postForm.elements.content.value.trim() }, 'POST');
+      window.location.href = `./post.html?id=${encodeURIComponent(result.id)}`;
+    } catch (error) { status.textContent = error.message; }
   });
 }
 
 const postDetail = document.querySelector('#post-detail');
-if (postDetail) {
-  const id = new URLSearchParams(location.search).get('id'); const post = readPosts().find((item) => item.id === id);
+if (postDetail) (async () => { try {
+  const id = new URLSearchParams(location.search).get('id'); const post = (await postApi('getPost', { id })).post;
   if (!post) postDetail.innerHTML = '<div class="empty-state"><p>게시글을 찾을 수 없습니다.</p></div>';
   else {
     postDetail.innerHTML = '';
@@ -226,10 +227,11 @@ if (postDetail) {
     const title = document.createElement('h1'); title.textContent = post.title;
     const body = document.createElement('div'); body.className = 'article-body post-content'; body.textContent = post.content;
     header.append(meta, title); postDetail.append(header, body);
-    if (sessionToken) {
+    const user = JSON.parse(localStorage.getItem('blogUser') || '{}');
+    if (sessionToken && user.id === post.userId) {
       const actions = document.querySelector('#post-actions');
       actions.innerHTML = `<a href="./write.html?id=${encodeURIComponent(id)}">수정</a> <button class="text-button" id="delete-post" type="button">삭제</button>`;
-      document.querySelector('#delete-post').addEventListener('click', () => { if (confirm('이 글을 삭제할까요?')) { savePosts(readPosts().filter((item) => item.id !== id)); location.href = './posts.html'; } });
+      document.querySelector('#delete-post').addEventListener('click', async () => { if (confirm('이 글을 삭제할까요?')) { try { await postApi('deletePost', { token: sessionToken, id }, 'POST'); location.href = './posts.html'; } catch (error) { alert(error.message); } } });
     }
   }
-}
+} catch (error) { postDetail.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; } })();
