@@ -182,8 +182,19 @@ if (postList) (async () => {
   try {
   const posts = (await postApi('listPosts')).posts;
   document.querySelector('#post-count').textContent = `전체 ${posts.length}개의 글`;
-  if (!posts.length) postList.innerHTML = '<div class="empty-state"><p>아직 작성된 게시글이 없습니다.</p></div>';
-  posts.forEach((post, index) => postList.append(createPostCard(post, index === 0)));
+  const categories = ['AI 활용', 'Q & A', '입트영', '일 상'];
+  categories.forEach((category) => {
+    const categoryPosts = posts.filter((post) => post.category === category);
+    const section = document.createElement('section'); section.className = 'post-category-section';
+    const heading = document.createElement('div'); heading.className = 'post-category-heading';
+    const title = document.createElement('h2'); title.textContent = category;
+    const count = document.createElement('span'); count.textContent = `${categoryPosts.length}개`;
+    heading.append(title, count);
+    const grid = document.createElement('div'); grid.className = 'post-grid';
+    if (!categoryPosts.length) grid.innerHTML = '<div class="empty-state"><p>아직 작성된 글이 없습니다.</p></div>';
+    categoryPosts.forEach((post, index) => grid.append(createPostCard(post, index === 0)));
+    section.append(heading, grid); postList.append(section);
+  });
   } catch (error) { postList.innerHTML = `<div class="empty-state"><p>${error.message}</p></div>`; }
 })();
 
