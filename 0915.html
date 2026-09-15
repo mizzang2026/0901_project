@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vite 기반 React 게시판, Node.js·Express와 SQLite 백엔드, 환경 변수, 관리자 화면과 로그인 메뉴 처리를 정리한 0915 학습 기록입니다.">
+  <title>0915 학습 기록 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js?v=20260915-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./index.html">홈</a>
+        <a href="./profile.html">프로필</a>
+        <a href="./login.html">로그인</a>
+        <div class="nav-dropdown current">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
+          <div class="nav-submenu">
+            <a href="./0831.html">0831 · 개발 환경</a>
+            <a href="./0901.html">0901 · 프로필 제작</a>
+            <a href="./0907.html">0907 · GitHub</a>
+            <a href="./0908.html">0908 · 블로그와 DB</a>
+            <a href="./0914.html">0914 · 블로그 기능 개선</a>
+            <a href="./0915.html" aria-current="page">0915 · React와 Express</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="subpage lesson-page lesson-0915">
+    <section class="lesson-page-heading">
+      <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>15</strong></div>
+      <div>
+        <p class="eyebrow">LEARNING LOG · DAY 06 · 2026.09.15</p>
+        <h1>React 프론트엔드와<br>Express 백엔드 시작하기</h1>
+        <p>프로젝트 폴더를 역할별로 나누고 Vite와 React로 게시판 화면을 구성합니다. Node.js·Express와 SQLite를 연결하고, 환경 변수와 관리자 전용 화면까지 갖춘 웹 서비스의 전체 구조를 익힙니다.</p>
+        <div class="lesson-tags"><span>React</span><span>Vite</span><span>Express</span><span>SQLite</span><span>Admin</span></div>
+      </div>
+    </section>
+
+    <section class="lesson-article" aria-label="0915 학습 내용">
+      <article class="article-block">
+        <span class="article-number">01</span>
+        <div>
+          <h2>프로젝트 폴더 준비</h2>
+          <p><strong>0915</strong> 폴더를 만들고 VS Code에서 폴더를 엽니다. 하나의 프로젝트 안에서도 역할을 구분할 수 있도록 프론트엔드, 백엔드, 문서 폴더를 따로 준비합니다.</p>
+          <div class="file-example"><code>0915/<br>├─ frontend/ &nbsp;# 사용자에게 보이는 React 화면<br>├─ backend/ &nbsp;&nbsp;# 데이터와 요청을 처리하는 서버<br>└─ docs/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 기획·설계·학습 문서</code></div>
+          <p class="inline-note">VS Code의 확장 프로그램 메뉴에서 <strong>SQLite Viewer</strong>를 설치하면 SQLite 데이터베이스 파일의 테이블과 내용을 편리하게 확인할 수 있습니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">02</span>
+        <div>
+          <h2>Vite로 React 설정</h2>
+          <p>Vite는 빠른 개발 서버와 최적화된 빌드 기능을 제공하는 도구입니다. React 프로젝트를 간단하게 시작할 수 있고, 필요한 패키지를 프로젝트별로 설치해 독립적으로 관리할 수 있습니다.</p>
+          <div class="command-list">
+            <div><code>npm create vite@latest frontend -- --template react</code><span>React 템플릿으로 frontend 프로젝트 생성</span></div>
+            <div><code>cd frontend</code><span>프론트엔드 폴더로 이동</span></div>
+            <div><code>npm install</code><span>package.json에 기록된 패키지를 node_modules에 설치</span></div>
+            <div><code>npm run dev</code><span>React 개발 서버 실행</span></div>
+          </div>
+          <div class="process-flow"><span>package.json 확인</span><i>→</i><span>npm install</span><i>→</i><span>node_modules 생성</span><i>→</i><span>npm run dev</span></div>
+          <p class="inline-note">터미널에 표시된 <strong>http://localhost:5173/</strong> 주소에서 React 화면이 보이면 개발 서버가 정상적으로 실행된 것입니다. <code>node_modules</code>는 용량이 크므로 Git에 올리지 않고, <code>package.json</code>을 이용해 각자 다시 설치합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">03</span>
+        <div>
+          <h2>개발 명령과 빌드 이해</h2>
+          <p>개발 중에는 빠른 확인을 위해 개발 서버를 사용하고, 완성한 결과를 배포할 때는 빌드 명령으로 브라우저가 사용할 파일을 만듭니다.</p>
+          <div class="topic-grid">
+            <section><h3>검사</h3><p><code>npm run lint</code>로 코드 규칙과 오류 가능성을 확인합니다.</p></section>
+            <section><h3>빌드</h3><p><code>npm run build</code>로 코드를 묶고 최적화해 외부에 배포할 <code>dist</code> 파일을 만듭니다.</p></section>
+          </div>
+          <div class="command-list">
+            <div><code>cd ..</code><span>현재 위치의 한 단계 상위 폴더로 이동</span></div>
+            <div><code>dir</code><span>현재 폴더의 파일과 디렉터리 확인</span></div>
+            <div><code>ls</code><span>PowerShell에서 목록 확인</span></div>
+            <div><code>cls 또는 clear</code><span>PowerShell 터미널 화면의 텍스트 지우기</span></div>
+          </div>
+          <p class="inline-note"><code>cd f</code>까지 입력한 뒤 <strong>Tab</strong> 키를 누르면 이름이 일치하는 폴더를 자동 완성할 수 있습니다. 프론트엔드와 백엔드를 동시에 실행할 때는 새 터미널을 열어 각각의 폴더로 이동합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">04</span>
+        <div>
+          <h2>Node.js와 Express 백엔드 구성</h2>
+          <p>새 터미널에서 backend 폴더로 이동한 뒤 Node.js 프로젝트를 만들고 Express를 설치합니다. Express는 브라우저나 프론트엔드에서 보낸 요청을 받아 응답하는 백엔드 서버를 간결하게 구성할 수 있게 해 줍니다.</p>
+          <div class="command-list">
+            <div><code>cd backend</code><span>백엔드 작업 폴더로 이동</span></div>
+            <div><code>npm init -y</code><span>기본 설정으로 package.json 생성</span></div>
+            <div><code>npm install express</code><span>Express 패키지 설치</span></div>
+            <div><code>node server.js</code><span>작성한 백엔드 서버 실행</span></div>
+          </div>
+          <div class="tech-flow"><div><strong>React</strong><span>localhost:5173</span></div><i>→ 요청</i><div><strong>Express</strong><span>localhost:3000</span></div><i>→ 처리</i><div><strong>데이터</strong><span>응답 반환</span></div></div>
+          <p class="inline-note">백엔드 주소는 <strong>http://localhost:3000</strong>입니다. 아직 화면을 제공하는 경로를 만들지 않았다면 브라우저에서 별도 페이지가 보이지 않아도 됩니다. 서버가 실행 중이고 요청에 응답하는지를 확인하는 것이 중요합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>게시판 프론트엔드 페이지 구성</h2>
+          <p>React의 각 화면을 페이지 컴포넌트로 나누고 주소에 따라 필요한 화면이 나타나도록 구성합니다. 공통 내비게이션은 재사용하되 로그인 여부에 따라 사용할 수 있는 메뉴를 구분합니다.</p>
+          <div class="profile-section-grid">
+            <div><strong>1. 메인 페이지</strong><span>서비스 소개와 최신 게시글 표시</span></div>
+            <div><strong>2. 로그인 페이지</strong><span>이메일과 비밀번호로 사용자 인증</span></div>
+            <div><strong>3. 회원가입 페이지</strong><span>새 사용자 정보 입력과 계정 생성</span></div>
+            <div><strong>4. 프로필 페이지</strong><span>로그인한 사용자의 정보와 작성 글 확인</span></div>
+            <div><strong>5. 게시판 페이지</strong><span>전체 게시글 목록과 검색·분류 제공</span></div>
+            <div><strong>6. 게시글 생성 페이지</strong><span>제목과 본문을 입력해 새 글 저장</span></div>
+            <div><strong>7. 게시물 상세 페이지</strong><span>선택한 글의 내용과 작성자 정보 표시</span></div>
+          </div>
+          <div class="file-example"><code>frontend/src/pages/<br>├─ HomePage.jsx<br>├─ LoginPage.jsx<br>├─ SignupPage.jsx<br>├─ ProfilePage.jsx<br>├─ BoardPage.jsx<br>├─ PostCreatePage.jsx<br>└─ PostDetailPage.jsx</code></div>
+          <p class="inline-note">페이지 이동은 React Router로 연결할 수 있습니다. 프로필과 글쓰기처럼 인증이 필요한 주소는 화면에서만 숨기지 말고 보호된 라우트와 백엔드 인증을 함께 적용합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">06</span>
+        <div>
+          <h2>SQLite 데이터베이스와 환경 변수</h2>
+          <p>backend 폴더에 SQLite 데이터베이스를 연결해 사용자와 게시글을 저장합니다. 서버 주소, 토큰 비밀키, 관리자 계정처럼 실행 환경마다 달라지거나 공개하면 안 되는 값은 <code>.env</code>에서 관리합니다.</p>
+          <div class="topic-grid">
+            <section><h3>users 테이블</h3><p>사용자 ID, 이름, 이메일, 암호화된 비밀번호, 권한을 저장합니다.</p></section>
+            <section><h3>posts 테이블</h3><p>게시글 ID, 작성자 ID, 제목, 본문, 작성·수정일을 저장합니다.</p></section>
+          </div>
+          <div class="command-list">
+            <div><code>npm install better-sqlite3 dotenv</code><span>SQLite 연결과 환경 변수 사용 패키지 설치</span></div>
+            <div><code>require('dotenv').config()</code><span>서버가 시작될 때 .env 값 불러오기</span></div>
+          </div>
+          <div class="file-example"><code>PORT=3000<br>DATABASE_PATH=./data/board.db<br>JWT_SECRET=충분히_길고_무작위인_비밀키<br>ADMIN_EMAIL=admin@example.com<br>ADMIN_PASSWORD_HASH=해시된_관리자_비밀번호</code></div>
+          <p class="inline-note"><strong>.env는 Git에 올리지 않습니다.</strong> 실제 비밀번호 대신 단방향 해시를 저장하고, 공유용 파일에는 키 이름만 담은 <code>.env.example</code>을 제공합니다. 관리자 계정도 서버 시작 시 안전하게 생성하거나 별도의 초기화 스크립트로 등록합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">07</span>
+        <div>
+          <h2>관리자 페이지와 전용 로그인</h2>
+          <p>일반 사용자 화면과 분리된 관리자 로그인 페이지를 만들고, 인증된 관리자만 대시보드에 접근하도록 구성합니다. 관리 화면은 현대적인 카드형 디자인과 명확한 정보 구조를 사용합니다.</p>
+          <div class="tech-flow"><div><strong>관리자 로그인</strong><span>계정·권한 확인</span></div><i>→</i><div><strong>관리자 세션</strong><span>접근 권한 유지</span></div><i>→</i><div><strong>대시보드</strong><span>서비스 현황 관리</span></div></div>
+          <div class="topic-grid">
+            <section><h3>왼쪽 카테고리</h3><p>대시보드, 회원 관리, 게시글 관리, 통계, 설정 메뉴를 고정 사이드바에 배치합니다.</p></section>
+            <section><h3>오른쪽 정보 영역</h3><p>선택한 메뉴의 통계 카드, 표, 상세 정보와 관리 버튼을 표시합니다.</p></section>
+          </div>
+          <p class="inline-note">관리자 메뉴를 화면에서 숨기는 것만으로는 안전하지 않습니다. 관리자용 API가 요청을 받을 때마다 서버에서 로그인 상태와 <code>admin</code> 권한을 다시 검사해야 합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">08</span>
+        <div>
+          <h2>로그인 상태에 따른 내비게이션</h2>
+          <p>메인 페이지의 프로필 버튼은 모든 방문자에게 항상 표시하지 않고, 로그인 상태를 확인한 뒤에만 보여 줍니다. 로그아웃 상태에서는 로그인과 회원가입 메뉴를 제공하고, 로그인 상태에서는 프로필과 로그아웃 메뉴로 전환합니다.</p>
+          <div class="process-flow"><span>세션 확인</span><i>→</i><span>사용자 인증</span><i>→</i><span>메뉴 전환</span><i>→</i><span>보호된 페이지 접근</span></div>
+          <div class="topic-grid">
+            <section><h3>로그아웃 상태</h3><p>로그인 · 회원가입을 표시하고 프로필 버튼은 숨깁니다.</p></section>
+            <section><h3>로그인 상태</h3><p>프로필 · 로그아웃을 표시하고 사용자 전용 기능을 활성화합니다.</p></section>
+          </div>
+          <p class="inline-note">새로고침 직후 프로필 버튼이 잠깐 보이는 현상을 막으려면 인증 확인 전에는 메뉴를 숨겨 두고, 세션 확인이 끝난 뒤 알맞은 메뉴만 렌더링합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">09</span>
+        <div>
+          <h2>관리자 계정 정보 변경과 인증 용어</h2>
+          <p>관리자가 자신의 이메일과 비밀번호를 바꿀 수 있도록 관리자 화면에 <strong>계정 설정</strong> 메뉴를 추가합니다. 현재 비밀번호를 먼저 확인한 뒤 새 이메일이나 새 비밀번호를 저장하고, 변경된 비밀번호는 원문이 아닌 해시 값으로 데이터베이스에 보관합니다.</p>
+          <div class="process-flow"><span>현재 비밀번호 확인</span><i>→</i><span>새 정보 입력</span><i>→</i><span>비밀번호 해시 생성</span><i>→</i><span>DB 저장·재로그인</span></div>
+          <div class="term-list">
+            <li><strong>해시 Hash</strong><span>비밀번호를 원래 내용으로 되돌리기 어려운 값으로 변환하는 것</span></li>
+            <li><strong>세션 Session</strong><span>로그인한 사용자인지 서버가 일정 시간 기억하는 로그인 상태</span></li>
+            <li><strong>시크릿 Secret</strong><span>로그인 토큰의 위조 여부를 확인할 때 서버만 사용하는 비밀키</span></li>
+          </div>
+          <div class="topic-grid">
+            <section><h3>처음 관리자 만들기</h3><p><code>.env</code>의 초기 관리자 이메일과 비밀번호로 서버가 최초 계정을 생성합니다. 생성 후에는 초기 비밀번호 항목을 제거하는 것이 안전합니다.</p></section>
+            <section><h3>나중에 정보 변경하기</h3><p>관리자 대시보드의 계정 설정에서 이메일과 비밀번호를 변경합니다. 서버는 현재 비밀번호와 관리자 권한을 확인한 뒤 저장합니다.</p></section>
+          </div>
+          <div class="file-example"><code># 최초 관리자 계정 생성에만 사용하는 .env 예시<br>ADMIN_EMAIL=내가_사용할_이메일<br>ADMIN_INITIAL_PASSWORD=내가_정한_초기_비밀번호<br>JWT_SECRET=충분히_길고_무작위인_서버_비밀키</code></div>
+          <p class="inline-note"><strong>쉽게 구분하기:</strong> 비밀번호는 사용자가 입력하고, 해시는 데이터베이스에 저장합니다. 세션은 로그인 상태를 기억하며, 시크릿은 서버가 세션이나 토큰을 안전하게 확인할 때 사용합니다. 시크릿은 관리자 비밀번호가 아니며 사용자에게 보여 주지 않습니다.</p>
+          <ul class="request-list">
+            <li>관리자 이메일 변경</li>
+            <li>관리자 비밀번호 변경</li>
+            <li>현재 비밀번호 재확인</li>
+            <li>변경 후 기존 세션 종료</li>
+          </ul>
+          <p class="inline-note"><strong>권장 방식:</strong> <code>.env</code>는 최초 관리자 생성용으로만 사용하고, 이후 계정 변경은 관리자 전용 계정 설정 화면에서 처리합니다. 비밀번호와 시크릿은 GitHub나 프론트엔드 코드에 올리지 않습니다.</p>
+        </div>
+      </article>
+
+      <section class="key-summary" aria-labelledby="summary-title">
+        <p class="eyebrow">TODAY'S GOAL</p>
+        <h2 id="summary-title">화면과 서버를 나누어 개발 환경 완성하기</h2>
+        <dl>
+          <div><dt>프론트</dt><dd>React 게시판 화면 7종과 라우팅</dd></div>
+          <div><dt>백엔드</dt><dd>Express API와 SQLite 데이터 저장</dd></div>
+          <div><dt>보안</dt><dd>.env와 관리자 계정 정보 관리</dd></div>
+          <div><dt>관리</dt><dd>전용 로그인과 좌우형 대시보드</dd></div>
+          <div><dt>인증 메뉴</dt><dd>로그인 상태에 따라 프로필 표시</dd></div>
+          <div><dt>계정 설정</dt><dd>관리자 이메일·비밀번호 직접 변경</dd></div>
+        </dl>
+        <blockquote>사용자 화면과 관리자 화면, 서버와 데이터베이스를 역할별로 나누고 인증과 환경 변수까지 고려해 실제 게시판 서비스의 뼈대를 완성합니다.</blockquote>
+      </section>
+    </section>
+
+    <nav class="page-navigation" aria-label="학습 기록 이동"><a href="./0914.html">← 0914 학습</a><a href="./index.html">블로그 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
