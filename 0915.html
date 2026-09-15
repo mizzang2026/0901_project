@@ -59,6 +59,9 @@
         <span class="article-number">02</span>
         <div>
           <h2>Vite로 React 설정</h2>
+          <p>이 작업은 터미널 명령을 하나씩 직접 입력한 것이 아니라, 먼저 Codex에게 아래와 같이 자연어로 요청하면서 시작했습니다.</p>
+          <div class="file-example"><code>0915 페이지에서 프론트 폴더, 백엔드 폴더, 문서 폴더 만들어줘.<br>프론트 폴더 안에 리액트를 설치해주는데, 비트를 활용해서 리액트를 셋팅해줘.</code></div>
+          <p class="inline-note"><strong>내가 직접 입력한 것은 위 요청문입니다.</strong> 아래의 <code>npm create vite</code>, <code>npm install</code> 같은 명령은 요청을 처리하기 위해 Codex가 터미널에서 자동으로 실행한 명령입니다. 여기서 요청문의 ‘비트’는 React 개발 도구인 <strong>Vite</strong>를 뜻합니다.</p>
           <p>Vite는 빠른 개발 서버와 최적화된 빌드 기능을 제공하는 도구입니다. React 프로젝트를 간단하게 시작할 수 있고, 필요한 패키지를 프로젝트별로 설치해 독립적으로 관리할 수 있습니다.</p>
           <div class="command-list">
             <div><code>npm create vite@latest frontend -- --template react</code><span>React 템플릿으로 frontend 프로젝트 생성</span></div>
@@ -94,7 +97,15 @@
         <span class="article-number">04</span>
         <div>
           <h2>Node.js와 Express 백엔드 구성</h2>
+          <p>백엔드도 터미널 명령을 하나씩 직접 입력한 것이 아니라, Codex에게 아래와 같이 자연어로 요청해 구성했습니다.</p>
+          <div class="file-example"><code>백엔드 폴더 안에 백엔드 서버를 만들 건데,<br>노드 익스프레스를 활용해서 백엔드 서버를 구성해줘.</code></div>
+          <p class="inline-note"><strong>내가 직접 입력한 것은 위 요청문입니다.</strong> 아래의 <code>npm init -y</code>, <code>npm install express</code>, <code>node server.js</code> 같은 명령은 요청을 처리하기 위해 Codex가 터미널에서 자동으로 실행한 명령입니다. 요청문의 ‘노드 익스프레스’는 <strong>Node.js에서 사용하는 Express</strong>를 뜻합니다.</p>
           <p>새 터미널에서 backend 폴더로 이동한 뒤 Node.js 프로젝트를 만들고 Express를 설치합니다. Express는 브라우저나 프론트엔드에서 보낸 요청을 받아 응답하는 백엔드 서버를 간결하게 구성할 수 있게 해 줍니다.</p>
+          <div class="topic-grid">
+            <section><h3>Node.js의 의미</h3><p>자바스크립트를 브라우저 밖에서도 실행할 수 있게 해 주는 실행 환경입니다. 이번 프로젝트에서는 백엔드의 <code>server.js</code> 파일을 실행하고 서버 프로그램이 계속 동작하도록 하는 기반으로 사용했습니다.</p></section>
+            <section><h3>Express의 의미</h3><p>Node.js에서 웹 서버와 API를 더 간단하게 만들도록 도와주는 프레임워크입니다. 이번 프로젝트에서는 주소별 요청을 받고, 필요한 작업을 처리한 뒤 프론트엔드에 응답을 보내는 역할로 적용했습니다.</p></section>
+          </div>
+          <p class="inline-note"><strong>쉽게 구분하면</strong> Node.js는 백엔드 서버를 움직이는 실행 환경이고, Express는 그 환경 위에서 요청과 응답을 편리하게 구성하는 도구입니다. 따라서 ‘노드 익스프레스’는 하나의 프로그램 이름이 아니라 <strong>Node.js 환경에서 Express를 사용해 백엔드 서버를 만든 구성</strong>을 의미합니다.</p>
           <div class="command-list">
             <div><code>cd backend</code><span>백엔드 작업 폴더로 이동</span></div>
             <div><code>npm init -y</code><span>기본 설정으로 package.json 생성</span></div>
