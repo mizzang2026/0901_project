@@ -103,6 +103,22 @@
         </div>
       </article>
 
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>관리자가 게시글 관리하기</h2>
+          <p>실제로 사이트를 만들 때는 Next.js를 이용할 수도 있습니다. 일반 사용자 화면과 관리자 화면을 나누어 만들고, 관리자 로그인도 일반 로그인과 따로 구분하는 방법을 배웠습니다.</p>
+          <div class="process-flow"><span>관리자 로그인</span><i>→</i><span>게시글 확인</span><i>→</i><span>삭제·숨김</span><i>→</i><span>화면에 반영</span></div>
+          <div class="topic-grid">
+            <section><h3>게시글 삭제</h3><p>관리자가 문제가 있는 게시글을 확인하고 삭제할 수 있게 합니다.</p></section>
+            <section><h3>게시글 숨김</h3><p>글을 바로 삭제하지 않고 사용자 화면에서 보이지 않게 숨길 수도 있습니다.</p></section>
+          </div>
+          <p>게시글을 삭제하거나 숨기면 그 결과를 데이터베이스에 저장합니다. 따라서 페이지를 새로 열어도 변경된 상태가 그대로 유지됩니다.</p>
+          <div class="file-example"><code>관리자가 로그인하면 모든 사용자의 게시글을 확인하고,<br>필요한 글을 삭제하거나 숨길 수 있게 만들어줘.<br>변경한 내용은 데이터베이스에 저장해줘.</code></div>
+          <p class="inline-note">관리자 기능은 일반 사용자가 이용할 수 없도록 관리자 계정으로 로그인했을 때만 보여줍니다.</p>
+        </div>
+      </article>
+
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S GOAL</p>
         <h2 id="summary-title">예시 내용을 지우고 실제 정보 연결하기</h2>
@@ -111,6 +127,7 @@
           <div><dt>메뉴</dt><dd>프로필 버튼 삭제하기</dd></div>
           <div><dt>게시판</dt><dd>작성한 글을 저장하고 보여주기</dd></div>
           <div><dt>관리자</dt><dd>.env에 입력한 정보로 계정 만들기</dd></div>
+          <div><dt>글 관리</dt><dd>관리자용 게시글 삭제와 숨김 기능</dd></div>
         </dl>
         <blockquote>화면에 미리 넣어 둔 예시 내용을 지우고, 내가 가입하고 작성한 내용이 실제로 나타나게 만듭니다.</blockquote>
       </section>
