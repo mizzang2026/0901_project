@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="조회수 기준을 정하고 GitHub와 Vercel로 프론트엔드를 배포한 뒤, Supabase Edge Functions와 환경 변수로 백엔드를 준비한 0922 학습 기록입니다.">
+  <title>0922 학습 기록 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js?v=20260922-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
+        <a href="./index.html">홈</a>
+        <a href="./profile.html">프로필</a>
+        <a href="./login.html">로그인</a>
+        <div class="nav-dropdown current">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
+          <div class="nav-submenu">
+            <a href="./0831.html">0831 · 개발 환경</a>
+            <a href="./0901.html">0901 · 프로필 제작</a>
+            <a href="./0907.html">0907 · GitHub</a>
+            <a href="./0908.html">0908 · 블로그와 DB</a>
+            <a href="./0914.html">0914 · 블로그 기능 개선</a>
+            <a href="./0915.html">0915 · React와 Express</a>
+            <a href="./0921.html">0921 · 실제 데이터 연동</a>
+            <a href="./0922.html" aria-current="page">0922 · 배포와 서비스 준비</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="subpage lesson-page lesson-0922">
+    <section class="lesson-page-heading">
+      <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>22</strong></div>
+      <div>
+        <p class="eyebrow">LEARNING LOG · DAY 08 · 2026.09.22</p>
+        <h1>조회수 기준을 정하고<br>웹서비스 배포 준비하기</h1>
+        <p>조회수를 언제 올릴지 기준을 정하고, 트래픽과 광고 서비스를 알아봤습니다. 프로젝트를 GitHub에 올려 프론트엔드를 배포하고 Supabase용 백엔드와 환경 변수를 준비하는 과정도 정리했습니다.</p>
+        <div class="lesson-tags"><span>조회수</span><span>Vercel</span><span>Edge Functions</span><span>환경 변수</span></div>
+      </div>
+    </section>
+
+    <section class="lesson-article" aria-label="0922 학습 내용">
+      <article class="article-block">
+        <span class="article-number">01</span>
+        <div>
+          <h2>조회수 처리 기준 정하기</h2>
+          <p>조회수 기능을 만들기 전에 누가 글을 읽었을 때 숫자를 올릴지 먼저 정해야 합니다. 로그인하지 않은 방문자까지 포함할지, 로그인한 사용자만 처리할지에 따라 구현 방법이 달라집니다.</p>
+          <div class="topic-grid">
+            <section><h3>모든 방문자</h3><p>로그인하지 않은 사람도 조회수에 포함하면 전체 방문 흐름을 넓게 확인할 수 있습니다.</p></section>
+            <section><h3>로그인 사용자</h3><p>로그인한 사람만 기록하면 사용자를 더 정확히 구분하고 중복 조회를 관리하기 쉽습니다.</p></section>
+          </div>
+          <div class="process-flow"><span>글 열기</span><i>→</i><span>사용자 확인</span><i>→</i><span>최근 조회 확인</span><i>→</i><span>조회수 증가</span></div>
+          <p class="inline-note"><strong>오늘 정한 기준은 24시간입니다.</strong> 같은 사용자가 같은 글을 다시 보더라도 24시간 안에는 조회수를 중복으로 올리지 않는 방식입니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">02</span>
+        <div>
+          <h2>트래픽과 광고 서비스 알아보기</h2>
+          <p>사이트가 운영되기 시작하면 방문자가 어디에서 왔고 얼마나 머물렀는지 살펴보거나, 광고를 연결해 수익을 만드는 방법을 생각할 수 있습니다.</p>
+          <div class="topic-grid">
+            <section><h3>Similarweb</h3><p>웹사이트의 트래픽, 방문 페이지 수, 체류와 같은 흐름을 분석할 때 활용합니다.</p></section>
+            <section><h3>Google AdSense</h3><p>사이트에 Google 광고를 표시하고 광고 노출이나 이용에 따라 수익을 얻는 서비스입니다.</p></section>
+            <section><h3>쿠팡 파트너스</h3><p>상품 광고 링크를 비교적 쉽게 연결할 수 있으며, API 이용 조건은 신청 시점의 공식 안내를 확인해야 합니다.</p></section>
+          </div>
+          <p class="inline-note">광고를 달기 전에 방문자가 읽을 만한 콘텐츠와 안정적인 사이트 운영 환경을 먼저 갖추는 것이 중요합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">03</span>
+        <div>
+          <h2>프로젝트를 GitHub에 올리기</h2>
+          <p>새 GitHub 저장소를 만든 뒤 로컬 프로젝트와 연결해 전체 코드를 올립니다. 처음 올릴 때는 저장소 초기화, 커밋, 기본 브랜치 설정, 원격 저장소 연결 순서로 진행합니다.</p>
+          <div class="file-example"><code>git init<br>git add .<br>git commit -m "first commit"<br>git branch -M main<br>git remote add origin 저장소_주소<br>git push -u origin main</code></div>
+          <p><code>.gitignore</code>에는 <code>node_modules</code>, 환경 설정 파일, 빌드 결과물처럼 GitHub에 올릴 필요가 없거나 공개하면 안 되는 파일을 적습니다.</p>
+          <p class="inline-note"><strong>특히 비밀번호와 API 키가 들어 있는 환경 파일은 저장소에 올리지 않습니다.</strong> 프론트엔드와 백엔드에 각각 필요한 제외 항목도 확인합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">04</span>
+        <div>
+          <h2>Vercel로 프론트엔드 배포하기</h2>
+          <p>GitHub 계정으로 Vercel에 가입하고 Hobby 요금제를 선택합니다. GitHub 저장소를 가져오면 Vercel이 프로젝트를 빌드해 인터넷에서 접속할 수 있는 주소를 만들어 줍니다.</p>
+          <div class="process-flow"><span>GitHub 가입</span><i>→</i><span>저장소 선택</span><i>→</i><span>Import</span><i>→</i><span>배포 완료</span></div>
+          <div class="topic-grid">
+            <section><h3>저장소 연결</h3><p>New Project에서 배포할 GitHub 저장소를 선택하고 필요한 경우 이메일 인증을 마칩니다.</p></section>
+            <section><h3>자동 배포</h3><p>연결 후 GitHub에 새 코드를 올리면 변경 내용을 다시 배포할 수 있습니다.</p></section>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">05</span>
+        <div>
+          <h2>Supabase로 데이터베이스 준비하기</h2>
+          <p>Supabase는 회원 정보와 게시글 같은 데이터를 저장할 수 있는 백엔드 서비스입니다. GitHub 계정으로 가입한 뒤 프로젝트를 만들고, 프론트엔드가 사용할 데이터베이스를 준비합니다.</p>
+          <div class="process-flow"><span>Supabase 가입</span><i>→</i><span>프로젝트 생성</span><i>→</i><span>테이블 준비</span><i>→</i><span>앱과 연결</span></div>
+          <p class="inline-note">Vercel은 화면을 인터넷에 공개하고, Supabase는 회원과 게시글 데이터를 보관하는 역할로 나누어 이해할 수 있습니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">06</span>
+        <div>
+          <h2>프론트엔드와 백엔드 배포를 나누어 이해하기</h2>
+          <p>GitHub에 올린 프로젝트의 프론트엔드는 Vercel에 먼저 배포했습니다. 화면을 제공하는 프론트엔드와 데이터 및 인증 요청을 처리하는 백엔드는 역할과 배포 위치가 다르다는 점을 배웠습니다.</p>
+          <div class="topic-grid">
+            <section><h3>Vercel</h3><p>브라우저에 보여 줄 화면을 빌드하고 공개 주소로 배포합니다.</p></section>
+            <section><h3>Supabase</h3><p>데이터베이스, 인증, 서버 측 함수처럼 데이터와 로직이 필요한 부분을 담당합니다.</p></section>
+          </div>
+          <div class="process-flow"><span>GitHub 저장소</span><i>→</i><span>Vercel 프론트엔드</span><i>＋</i><span>Supabase 백엔드</span><i>→</i><span>하나의 서비스</span></div>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">07</span>
+        <div>
+          <h2>기존 백엔드를 Edge Functions에 맞게 바꾸기</h2>
+          <p>기존 백엔드 파일을 그대로 올리는 것이 아니라 Supabase Edge Functions가 실행할 수 있는 구조와 방식으로 바꾸어야 합니다. 요청을 받는 경로, 데이터베이스 연결, 응답 형식, 인증과 오류 처리를 빠짐없이 함께 확인해야 합니다.</p>
+          <div class="process-flow"><span>기존 기능 확인</span><i>→</i><span>함수별 변환</span><i>→</i><span>DB·인증 연결</span><i>→</i><span>배포 후 테스트</span></div>
+          <p class="inline-note"><strong>핵심은 기능 보존입니다.</strong> 형식만 바꾸는 것이 아니라 회원가입, 로그인, 게시글과 같은 기존 기능이 변환 뒤에도 같은 결과를 내는지 하나씩 검증해야 합니다.</p>
+        </div>
+      </article>
+
+      <article class="article-block">
+        <span class="article-number">08</span>
+        <div>
+          <h2>환경 변수와 키를 안전하게 관리하기</h2>
+          <p>배포 서비스의 토큰과 Supabase 키는 코드에 직접 적지 않고 로컬 환경 파일과 각 배포 서비스의 환경 변수 설정에 저장합니다. 브라우저에서 사용하도록 허용된 공개 키와 서버에서만 사용해야 하는 비밀 키도 구분해야 합니다.</p>
+          <div class="topic-grid">
+            <section><h3>공개 가능한 값</h3><p>프론트엔드에서 사용하도록 설계된 공개 키만 필요한 범위에서 사용합니다.</p></section>
+            <section><h3>비밀로 지킬 값</h3><p>서비스 역할 키, 배포 토큰, 비밀번호는 서버 환경 변수에만 저장하고 저장소에 올리지 않습니다.</p></section>
+          </div>
+          <p class="inline-note"><strong><code>.env</code> 파일은 <code>.gitignore</code>에 포함합니다.</strong> 키가 코드나 문서에 노출됐다면 파일에서 지우는 것만으로 끝내지 않고 해당 서비스에서 즉시 폐기한 뒤 새 키를 발급합니다.</p>
+        </div>
+      </article>
+
+      <section class="key-summary" aria-labelledby="summary-title">
+        <p class="eyebrow">TODAY'S GOAL</p>
+        <h2 id="summary-title">운영 기준을 세우고 실제 배포로 나아가기</h2>
+        <dl>
+          <div><dt>조회수</dt><dd>로그인 여부와 24시간 중복 기준 정하기</dd></div>
+          <div><dt>분석</dt><dd>트래픽과 방문 흐름을 살펴보는 도구 이해하기</dd></div>
+          <div><dt>GitHub</dt><dd>환경 파일을 제외하고 프로젝트 올리기</dd></div>
+          <div><dt>Vercel</dt><dd>GitHub 저장소를 연결해 프론트엔드 배포하기</dd></div>
+          <div><dt>Supabase</dt><dd>데이터베이스와 Edge Functions로 백엔드 준비하기</dd></div>
+          <div><dt>보안</dt><dd>공개 키와 비밀 키를 구분해 환경 변수로 관리하기</dd></div>
+        </dl>
+        <blockquote>기능을 만드는 데서 끝내지 않고, 프론트엔드와 백엔드를 나누어 배포하고 중요한 설정값을 안전하게 관리하는 과정까지 배웠습니다.</blockquote>
+      </section>
+    </section>
+
+    <nav class="page-navigation" aria-label="학습 기록 이동"><a href="./0921.html">← 0921 학습</a><a href="./index.html">블로그 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
