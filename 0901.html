@@ -6,36 +6,14 @@
   <meta name="description" content="0901 HTML, CSS, JavaScript 프로필 페이지 제작 수업 기록입니다.">
   <title>0901 수업 기록 | Jules의 AI 학습일지</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/header.js?v=20260928-1" defer></script>
   <script src="./js/main.js?v=20260914-4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="학습일지 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
-        <span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
-      </button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown current">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html" aria-current="page">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
-  <main id="main-content" class="subpage lesson-page">
+  <main id="main-content" class="subpage lesson-page work-note">
     <section class="lesson-page-heading">
       <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>01</strong></div>
       <div>
@@ -124,6 +102,20 @@
           <p>프로필 사진은 페이지 디자인에 따라 원형이나 사각형으로 표현할 수 있고, 이미지 크기와 배치도 CSS로 조절할 수 있습니다.</p>
         </div>
       </article>
+
+      <article class="article-block"><span class="article-number">실습</span><div>
+        <h2>수업에서 사용한 프로필 제작 프롬프트</h2>
+        <h3 class="subheading">1. 폴더와 기획 문서 준비</h3>
+        <div class="prompt-examples"><p>“프로젝트에 frontend, backend, docs 폴더를 만들어줘. 폴더명은 가능하면 영어로 정리해줘.”</p><p>“HTML, CSS, JavaScript로 개인 프로필 페이지를 만들 거야. 제작에 필요한 내용을 docs 폴더에 문서로 정리해줘.”</p></div>
+        <p class="inline-note"><code>frontend.000</code>보다 <code>frontend</code>, <code>backend</code>, <code>docs</code>처럼 역할이 바로 보이는 폴더명이 좋습니다.</p>
+        <h3 class="subheading">2. 문서를 기준으로 제작</h3>
+        <div class="prompt-examples"><p>“자기소개, 사진, 강점, 기술, 연락처, 이메일, GitHub, 프로젝트 내용을 포함해줘.”</p><p>“docs 폴더의 문서를 기반으로 개인 프로필 페이지를 구성해줘.”</p></div>
+        <h3 class="subheading">3. 이미지 추가</h3>
+        <p>검색한 이미지를 <code>jpg</code>, <code>jpeg</code>, <code>png</code>로 저장한 뒤 프로젝트에 넣었습니다.</p>
+        <div class="prompt-examples"><p>“방금 추가한 이미지를 프로필 이미지로 사용하고 싶어. assets 안에 images 폴더가 없다면 만들고 이미지를 그 폴더로 옮겨줘.”</p></div>
+        <h3 class="subheading">4. 결과를 보고 수정</h3>
+        <div class="prompt-examples"><p>“프로필 이미지를 확대하고 가운데로 옮겨줘. 아래 텍스트도 더 잘 보이게 수정해줘.”</p><p>“소개, 기술, 프로젝트 메뉴는 별도 페이지로 만들어 연결하고 연락처 버튼은 제거해줘.”</p></div>
+      </div></article>
 
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S KEY POINTS</p>

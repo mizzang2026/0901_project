@@ -3,33 +3,13 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="개인 블로그 재구성과 Google Sheets DB 연동 준비 과정입니다."><title>0908 학습 기록 | Jules의 기록</title>
-  <link rel="stylesheet" href="./css/style.css"><script src="./js/main.js?v=20260914-4" defer></script>
+  <link rel="stylesheet" href="./css/style.css"><script src="./js/header.js?v=20260928-1" defer></script>
+  <script src="./js/main.js?v=20260914-4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown current">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html" aria-current="page">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
-  <main id="main-content" class="subpage lesson-page lesson-0908">
+  <div id="site-header"></div>
+  <main id="main-content" class="subpage lesson-page work-note lesson-0908">
     <section class="lesson-page-heading"><div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>08</strong></div><div><p class="eyebrow">LEARNING LOG · DAY 04 · 2026.09.08</p><h1>개인 블로그 재구성과<br>DB 연동 준비</h1><p>GitHub Pages와 Google 스프레드시트를 열고 데이터 연동을 준비하면서, 기존 개인 프로필 사이트를 게시글 중심의 블로그 구조로 변경했습니다.</p><div class="lesson-tags"><span>Blog</span><span>Google Sheets</span><span>DB</span><span>Codex</span></div></div></section>
     <section class="lesson-article" aria-label="0908 학습 내용">
       <article class="article-block"><span class="article-number">01</span><div><h2>Google Sheets를 DB처럼 사용하기</h2><p>GitHub Pages는 정적 웹사이트이므로 자체적으로 데이터를 저장할 서버가 없습니다. 수업에서는 Google 스프레드시트를 간단한 데이터 저장소처럼 사용하고 Google Apps Script를 연결 통로로 활용할 예정입니다.</p><div class="process-flow"><span>웹페이지 입력</span><i>→</i><span>Apps Script</span><i>→</i><span>Google Sheets 저장</span><i>→</i><span>웹페이지 조회</span></div></div></article>
@@ -111,6 +91,17 @@
           <p class="inline-note">JavaScript가 정상 실행되면 화면을 이동하지 않고 결과 메시지를 표시합니다. JavaScript를 불러오지 못하더라도 폼이 GitHub Pages가 아닌 Apps Script로 전송되어 405 오류를 피할 수 있습니다.</p>
         </div>
       </article>
+      <article class="article-block"><span class="article-number">실습</span><div>
+        <h2>수업에서 사용한 블로그·스프레드시트 연동 프롬프트</h2>
+        <h3 class="subheading">1. 프로필을 블로그로 변경</h3>
+        <div class="prompt-examples"><p>“개인 프로필 페이지를 블로그 구조로 재구성해줘. 회원가입, 로그인, 프로필, 게시글 목록, 상세, 작성 페이지를 추가해줘.”</p><p>“변경사항을 확인한 뒤 GitHub에 올려줘.”</p></div>
+        <h3 class="subheading">2. Google Sheets와 Apps Script 준비</h3>
+        <ol><li>빈 스프레드시트를 만들고 이름을 <strong>DB</strong>로 바꿉니다.</li><li><strong>확장 프로그램 → Apps Script</strong>를 엽니다.</li><li>Apps Script 프로젝트 이름도 <strong>DB</strong>로 바꿉니다.</li><li>스프레드시트 주소의 <code>/d/</code>와 <code>/edit</code> 사이에서 문서 ID를 확인합니다.</li></ol>
+        <div class="prompt-examples"><p>“GitHub의 블로그 프로젝트를 Google Sheets와 Apps Script에 연결하려고 해. 어떻게 해야 하는지 알려줘.”</p><p>“내 Apps Script 프로젝트 ID는 1iQHzYgFRfEr5lVcFZ-qa6pn6tSpU2h8NCNTzqwJUmZXex3qQtpqy1KS2야.”</p></div>
+        <h3 class="subheading">3. 회원가입·로그인 구현과 시험</h3>
+        <div class="prompt-examples"><p>“먼저 회원가입과 로그인 기능을 만들고 배포할 수 있게 Apps Script 코드를 만들어줘.”</p><p>“Google Sheets와 Apps Script 배포를 완료했어. 직접 테스트해줘.”</p><p>“실패하면 웹 코드와 Apps Script 코드를 수정하고 전체 변경사항을 GitHub에 올려줘.”</p></div>
+        <p class="inline-note">Apps Script 코드가 바뀌면 새 버전으로 다시 배포해야 실제 웹 앱에 반영됩니다.</p>
+      </div></article>
     </section>
     <nav class="page-navigation" aria-label="학습 기록 이동"><a href="./0907.html">← 0907 학습</a><a href="./0914.html">0914 학습 →</a></nav>
   </main>

@@ -6,35 +6,14 @@
   <meta name="description" content="Vite 기반 React 게시판, Node.js·Express와 SQLite 백엔드, 환경 변수, 관리자 화면과 로그인 메뉴 처리를 정리한 0915 학습 기록입니다.">
   <title>0915 학습 기록 | Jules의 기록</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/header.js?v=20260928-1" defer></script>
   <script src="./js/main.js?v=20260915-1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown current">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html" aria-current="page">0915 · React와 Express</a>
-            <a href="./0921.html">0921 · 실제 데이터 연동</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
-  <main id="main-content" class="subpage lesson-page lesson-0915">
+  <main id="main-content" class="subpage lesson-page work-note lesson-0915">
     <section class="lesson-page-heading">
       <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>15</strong></div>
       <div>
@@ -209,6 +188,19 @@
           <p class="inline-note"><strong>권장 방식:</strong> <code>.env</code>는 최초 관리자 생성용으로만 사용하고, 이후 계정 변경은 관리자 전용 계정 설정 화면에서 처리합니다. 비밀번호와 시크릿은 GitHub나 프론트엔드 코드에 올리지 않습니다.</p>
         </div>
       </article>
+
+      <article class="article-block"><span class="article-number">실습</span><div>
+        <h2>수업에서 사용한 웹서비스 시작 프롬프트</h2>
+        <h3 class="subheading">1. 프로젝트와 서버 구성</h3>
+        <div class="prompt-examples"><p>“frontend, backend, docs 폴더를 만들어줘.”</p><p>“frontend에 Vite를 사용해 React를 설정해줘.”</p><p>“backend에는 Node.js와 Express로 백엔드 서버를 구성해줘.”</p></div>
+        <h3 class="subheading">2. 게시판 화면 만들기</h3>
+        <div class="prompt-examples"><p>“메인, 로그인, 회원가입, 프로필, 게시글 목록, 게시글 작성, 게시글 상세 페이지를 frontend에 추가해줘.”</p><p>“backend에 SQLite를 추가하고 환경 변수 관리를 위한 .env 파일을 만들어줘.”</p></div>
+        <h3 class="subheading">3. 관리자 기능</h3>
+        <div class="prompt-examples"><p>“왼쪽에 메뉴, 오른쪽에 정보가 보이는 관리자 페이지와 관리자 전용 로그인 페이지를 만들어줘.”</p><p>“메뉴의 프로필 버튼은 로그인했을 때만 보이게 수정해줘.”</p><p>“.env에서 관리자 계정을 설정하고 나중에 관리자 정보를 변경할 수 있게 해줘.”</p></div>
+        <p class="inline-note">관리자 비밀번호는 그대로 저장하지 않고 해시로 변환하며, 세션과 비밀키는 서버에서 관리합니다.</p>
+        <h3 class="subheading">4. 자주 쓴 터미널 명령</h3>
+        <div class="command-list"><div><code>cd 폴더명</code><span>폴더로 이동</span></div><div><code>cd ..</code><span>상위 폴더로 이동</span></div><div><code>ls / dir</code><span>현재 폴더 파일 확인</span></div><div><code>cls / clear</code><span>터미널 화면 정리</span></div><div><code>npm run dev</code><span>개발 서버 실행</span></div><div><code>Ctrl + C</code><span>실행 중인 서버 종료</span></div></div>
+      </div></article>
 
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S GOAL</p>

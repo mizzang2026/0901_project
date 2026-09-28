@@ -7,36 +7,12 @@
   <meta name="theme-color" content="#f6f3ec">
   <title>Jules의 기록 | AI와 웹 개발 블로그</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/header.js?v=20260928-1" defer></script>
   <script src="./js/main.js?v=20260914-8" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
-        <span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
-      </button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html" aria-current="page">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-            <a href="./0921.html">0921 · 실제 데이터 연동</a>
-            <a href="./0922.html">0922 · 배포와 서비스 준비</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
   <main id="main-content" class="blog-home">
     <section class="blog-hero" aria-labelledby="hero-title">
@@ -59,8 +35,17 @@
       </div>
       <div class="post-grid">
         <article class="post-card post-card-featured">
+          <a href="./0928.html" aria-label="0928 배포된 서비스를 연결하고 오류의 원인 찾아가기 글 읽기">
+            <div class="post-meta"><time datetime="2026-09-28">2026.09.28</time><span>NEW</span></div>
+            <h3>배포된 서비스를 연결하고<br>오류의 원인 찾아가기</h3>
+            <p>React와 Supabase를 연결하고 SPA 라우팅, DB 스키마, 날짜 표시 문제를 단계별로 해결했습니다.</p>
+            <ul class="post-tags"><li>React</li><li>Supabase</li><li>디버깅</li></ul>
+            <strong>기록 읽기 →</strong>
+          </a>
+        </article>
+        <article class="post-card">
           <a href="./0922.html" aria-label="0922 조회수 기준을 정하고 웹서비스 배포 준비하기 글 읽기">
-            <div class="post-meta"><time datetime="2026-09-22">2026.09.22</time><span>NEW</span></div>
+            <div class="post-meta"><time datetime="2026-09-22">2026.09.22</time><span>08</span></div>
             <h3>조회수 기준을 정하고<br>웹서비스 배포 준비하기</h3>
             <p>24시간 조회수 기준부터 Vercel 배포, Supabase Edge Functions와 환경 변수 관리까지 배웠습니다.</p>
             <ul class="post-tags"><li>조회수</li><li>Vercel</li><li>Edge Functions</li></ul>

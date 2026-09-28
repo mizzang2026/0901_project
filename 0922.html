@@ -6,36 +6,14 @@
   <meta name="description" content="조회수 기준을 정하고 GitHub와 Vercel로 프론트엔드를 배포한 뒤, Supabase Edge Functions와 환경 변수로 백엔드를 준비한 0922 학습 기록입니다.">
   <title>0922 학습 기록 | Jules의 기록</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/header.js?v=20260928-1" defer></script>
   <script src="./js/main.js?v=20260922-1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown current">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-            <a href="./0921.html">0921 · 실제 데이터 연동</a>
-            <a href="./0922.html" aria-current="page">0922 · 배포와 서비스 준비</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
-  <main id="main-content" class="subpage lesson-page lesson-0922">
+  <main id="main-content" class="subpage lesson-page work-note lesson-0922">
     <section class="lesson-page-heading">
       <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>22</strong></div>
       <div>
@@ -144,6 +122,20 @@
           <p class="inline-note"><strong><code>.env</code> 파일은 <code>.gitignore</code>에 포함합니다.</strong> 키가 코드나 문서에 노출됐다면 파일에서 지우는 것만으로 끝내지 않고 해당 서비스에서 즉시 폐기한 뒤 새 키를 발급합니다.</p>
         </div>
       </article>
+
+      <article class="article-block"><span class="article-number">실습</span><div>
+        <h2>수업에서 사용한 게시판 완성과 배포 프롬프트</h2>
+        <h3 class="subheading">1. 조회수·반응·댓글</h3>
+        <div class="prompt-examples"><p>“게시글에 조회수, 좋아요, 싫어요, 댓글을 추가하고 공유 버튼은 제외해줘.”</p><p>“조회수, 반응, 댓글을 DB에 저장해줘.”</p><p>“댓글은 작성자만 수정·삭제하고 관리자는 댓글을 숨기거나 삭제할 수 있게 해줘.”</p></div>
+        <p>조회수는 <strong>로그인 사용자만</strong> 기록하고, 같은 사용자의 같은 글 조회는 localStorage와 세션을 참고해 <strong>24시간 안에 중복 증가하지 않도록</strong> 기준을 정했습니다.</p>
+        <h3 class="subheading">2. GitHub 업로드</h3>
+        <div class="file-example"><code>echo "# 프로젝트명" &gt;&gt; README.md<br>git init<br>git add README.md<br>git commit -m "first commit"<br>git branch -M main<br>git remote add origin https://github.com/사용자명/저장소명.git<br>git push -u origin main</code></div>
+        <h3 class="subheading">3. Vercel과 Supabase 배포</h3>
+        <ol><li>Vercel에 GitHub 계정으로 가입하고 저장소를 연결해 frontend를 배포합니다.</li><li>Supabase에 가입하고 프로젝트를 만듭니다.</li><li>기존 Express·SQLite backend를 Supabase Edge Function과 PostgreSQL 구조로 바꿉니다.</li></ol>
+        <div class="prompt-examples"><p>“frontend는 Vercel에 배포했어. backend 전체를 누락 없이 Supabase Edge Function용으로 변경해줘.”</p><p>“.env에 Vercel과 Supabase CLI 접근에 필요한 환경 변수 자리를 추가해줘.”</p></div>
+        <div class="command-list"><div><code>VERCEL_ACCESS_TOKEN=</code><span>Vercel CLI 접근 토큰</span></div><div><code>SUPABASE_ACCESS_TOKEN=</code><span>Supabase CLI 접근 토큰</span></div><div><code>SUPABASE_URL=</code><span>Supabase 프로젝트 주소</span></div><div><code>SUPABASE_ANON_KEY=</code><span>브라우저에서 제한적으로 사용하는 공개 키</span></div><div><code>SUPABASE_SERVICE_ROLE_KEY=</code><span>서버에서만 사용하는 강한 권한의 비밀 키</span></div></div>
+        <p class="study-warning"><strong>보안:</strong> 실제 토큰과 Service Role Key는 페이지, frontend, GitHub에 넣지 않습니다. 서버 환경 변수에만 저장합니다.</p>
+      </div></article>
 
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S GOAL</p>

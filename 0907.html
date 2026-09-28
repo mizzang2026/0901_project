@@ -6,6 +6,7 @@
   <meta name="description" content="Git과 GitHub로 프로젝트를 관리하고 GitHub Pages로 웹사이트를 공개하는 방법을 정리한 9월 7일 학습일지입니다.">
   <title>0907 수업 기록 | Jules의 AI 학습일지</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/header.js?v=20260928-1" defer></script>
   <script src="./js/main.js?v=20260914-4" defer></script>
   <style>
     .lesson-0907 .article-block > div { min-width: 0; }
@@ -16,32 +17,9 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="학습일지 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
-        <span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
-      </button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown current">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html" aria-current="page">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
-  <main id="main-content" class="subpage lesson-page lesson-0907">
+  <main id="main-content" class="subpage lesson-page work-note lesson-0907">
     <section class="lesson-page-heading">
       <div class="lesson-date" aria-hidden="true"><span>SEP</span><strong>07</strong></div>
       <div>
@@ -173,6 +151,17 @@ git push</code></pre>
           <p class="inline-note">첫 화면 파일 이름은 <code>index.html</code>로 작성해야 기본 주소에서 바로 열립니다. 파일을 수정한 뒤 다시 업로드하거나 Git으로 push하면 Pages가 새 버전을 다시 배포합니다.</p>
         </div>
       </article>
+
+      <article class="article-block"><span class="article-number">실습</span><div>
+        <h2>수업에서 사용한 GitHub 업로드 프롬프트</h2>
+        <div class="prompt-examples"><p>“GitHub CLI로 로그인하고 프로젝트를 업로드할 수 있게 처리해줘. 검색 후 설치가 필요하면 설치해줘.”</p></div>
+        <div class="command-list"><div><code>git config --global user.name "이름"</code><span>커밋 작성자 이름</span></div><div><code>git config --global user.email "이메일"</code><span>커밋 작성자 이메일</span></div></div>
+        <p class="inline-note">개인정보는 프롬프트에 공개해서 적기보다 직접 확인하여 입력합니다. 공개가 부담스러우면 GitHub의 noreply 이메일을 사용합니다.</p>
+        <h3 class="subheading">첫 업로드 명령</h3>
+        <div class="file-example"><code>echo "# 프로젝트명" &gt;&gt; README.md<br>git init<br>git add README.md<br>git commit -m "first commit"<br>git branch -M main<br>git remote add origin https://github.com/사용자명/저장소명.git<br>git push -u origin main</code></div>
+        <div class="prompt-examples"><p>“내 프로젝트를 GitHub에 올려줘.”</p><p>“GitHub Pages에서 불러올 수 있도록 frontend 안의 공개 파일을 저장소 루트로 이동한 뒤 다시 올려줘.”</p></div>
+        <p class="inline-note">코드 업로드와 GitHub Pages 공개 설정은 서로 다른 작업입니다.</p>
+      </div></article>
 
       <section class="key-summary" aria-labelledby="summary-title">
         <p class="eyebrow">TODAY'S KEY POINTS</p><h2 id="summary-title">오늘 배운 흐름</h2>

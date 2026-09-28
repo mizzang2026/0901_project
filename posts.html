@@ -3,32 +3,12 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Jules의 기록 블로그 게시글 목록입니다."><title>게시글 목록 | Jules의 기록</title>
-  <link rel="stylesheet" href="./css/style.css?v=20260914-11"><script src="./js/main.js?v=20260914-11" defer></script>
+  <link rel="stylesheet" href="./css/style.css?v=20260914-11"><script src="./js/header.js?v=20260928-1" defer></script>
+  <script src="./js/main.js?v=20260914-11" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문 바로가기</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="./index.html" aria-label="Jules의 기록 홈">Jules<span>.</span></a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation"><span class="sr-only">메뉴 열기</span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
-      <nav id="main-navigation" class="navigation" aria-label="주요 메뉴">
-        <a href="./index.html">홈</a>
-        <a href="./profile.html">프로필</a>
-        <a href="./login.html">로그인</a>
-        <div class="nav-dropdown">
-          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">학습기록 <span aria-hidden="true">⌄</span></button>
-          <div class="nav-submenu">
-            <a href="./0831.html">0831 · 개발 환경</a>
-            <a href="./0901.html">0901 · 프로필 제작</a>
-            <a href="./0907.html">0907 · GitHub</a>
-            <a href="./0908.html">0908 · 블로그와 DB</a>
-            <a href="./0914.html">0914 · 블로그 기능 개선</a>
-            <a href="./0915.html">0915 · React와 Express</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+  <div id="site-header"></div>
   <main id="main-content" class="account-page">
     <section class="content-heading"><p class="eyebrow">ALL POSTS</p><h1>게시글 목록</h1><p>최근 작성한 블로그 글과 학습기록을 모아봅니다.</p></section>
     <div class="post-section-heading"><p id="post-count">게시글을 불러오는 중입니다.</p><a class="button button-primary" href="./write.html">글쓰기</a></div>
