@@ -170,6 +170,41 @@ a { color: inherit; }
 .post-category-list .post-card h3, #profile-post-list .post-card h3 { margin: 24px 0 10px; font-size: 1.55rem; }
 .post-category-list .post-card > a > p:not(.post-author), #profile-post-list .post-card > a > p:not(.post-author) { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
+/* 메인 학습기록: 작업노트와 같은 글꼴, 짧고 빠르게 읽히는 카드 */
+.blog-home .blog-hero { min-height: 400px; padding: 64px 0; gap: 60px; }
+.blog-home .blog-hero h1,
+.blog-home .post-section-heading h2,
+.blog-home .blog-topics h2 {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -.04em;
+}
+.blog-home .blog-hero h1 { margin: 12px 0 20px; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1.12; }
+.blog-home .blog-intro { padding: 22px; border-top-width: 3px; }
+.blog-home .post-section { padding: 64px 0 76px; }
+.blog-home .post-grid { margin-top: 32px; gap: 14px; }
+.blog-home .post-card { min-height: 245px; }
+.blog-home .post-card > a { padding: 24px; }
+.blog-home .post-card h3 {
+  margin: 22px 0 10px;
+  font-family: var(--sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -.025em;
+}
+.blog-home .post-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.6;
+}
+.blog-home .post-tags { margin: 14px 0 16px; gap: 5px; }
+.blog-home .post-tags li { padding: 3px 8px; }
+.blog-home .post-card strong { margin-top: auto; }
+.blog-home .blog-topics { padding: 56px 0; }
+
 .hero, .section, .site-footer {
   width: min(1160px, calc(100% - 40px));
   margin-inline: auto;
