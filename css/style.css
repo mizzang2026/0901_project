@@ -180,6 +180,13 @@ a { color: inherit; }
   letter-spacing: -.04em;
 }
 .blog-home .blog-hero h1 { margin: 12px 0 20px; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1.12; }
+.blog-home .blog-hero h1 em {
+  color: var(--blue-dark);
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -.055em;
+}
 .blog-home .blog-intro { padding: 22px; border-top-width: 3px; }
 .blog-home .post-section { padding: 64px 0 76px; }
 .blog-home .post-grid {
@@ -245,6 +252,49 @@ a { color: inherit; }
   white-space: nowrap;
 }
 .blog-home .blog-topics { padding: 56px 0; }
+
+/* 운영자 소개: 메인과 같은 단정한 학습 기록 분위기 */
+.about-page { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+.about-page .about-hero {
+  min-height: 480px;
+  padding: 70px 0;
+  grid-template-columns: 1.35fr .65fr;
+  gap: 64px;
+  border-bottom: 1px solid var(--line);
+}
+.about-page .about-hero h1 {
+  margin: 14px 0 22px;
+  font-family: var(--sans);
+  font-size: clamp(2.7rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -.05em;
+}
+.about-page .about-hero h1 em { color: var(--blue-dark); font-style: normal; font-weight: 700; }
+.about-page .portrait { transform: none; }
+.about-page .portrait-shape {
+  width: min(300px, 100%);
+  border-radius: 4px;
+  box-shadow: 16px 16px 0 var(--sky);
+}
+.about-page .about { width: 100%; padding: 64px 0 84px; }
+.about-page .section-label { color: var(--blue-dark); font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.about-page .about-content { margin-top: 32px; grid-template-columns: .75fr 1.25fr; gap: 70px; }
+.about-page .about h2 {
+  font-family: var(--sans);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.04em;
+}
+.about-page .about-copy { max-width: none; font-size: 1rem; }
+.about-page .about-copy p { margin: 0; padding: 18px 4px; border-top: 1px solid var(--line); }
+.about-page .about-copy p:last-child { border-bottom: 1px solid var(--line); }
+.about-page .about-copy p:first-child { font-size: 1.05rem; }
+.about-facts { margin: 34px 0 0; padding: 0; display: grid; list-style: none; border-top: 1px solid var(--ink); }
+.about-facts li { padding: 15px 4px; display: grid; grid-template-columns: 110px 1fr; gap: 18px; border-bottom: 1px solid var(--line); }
+.about-facts strong { color: var(--blue-dark); }
+.about-facts span { color: var(--muted); }
 
 .hero, .section, .site-footer {
   width: min(1160px, calc(100% - 40px));
@@ -772,6 +822,8 @@ a { color: inherit; }
   .lesson-details { grid-template-columns: 1fr; }
   .page-hero, .lesson-page-heading { grid-template-columns: 1fr; gap: 45px; }
   .page-hero { padding-block: 70px; }
+  .about-page .about-hero { grid-template-columns: 1fr; }
+  .about-page .about-content { grid-template-columns: 1fr; gap: 34px; }
   .page-hero .portrait { grid-row: 1; }
   .page-hero .portrait-shape { width: min(280px, 78%); }
   .lesson-page-heading .lesson-date { width: 140px; }
@@ -802,6 +854,7 @@ a { color: inherit; }
   .blog-home .post-card h3 { font-size: 1rem; }
   .blog-home .post-card strong { font-size: 0; }
   .blog-home .post-card strong::after { content: '→'; font-size: .9rem; }
+  .about-facts li { grid-template-columns: 1fr; gap: 2px; }
   .hero-actions { align-items: flex-start; flex-direction: column; }
   .site-footer { padding: 28px 0; align-items: flex-start; flex-direction: column; justify-content: center; gap: 2px; }
   .site-footer p { margin: 2px 0; }
