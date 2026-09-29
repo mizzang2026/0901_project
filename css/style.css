@@ -170,7 +170,7 @@ a { color: inherit; }
 .post-category-list .post-card h3, #profile-post-list .post-card h3 { margin: 24px 0 10px; font-size: 1.55rem; }
 .post-category-list .post-card > a > p:not(.post-author), #profile-post-list .post-card > a > p:not(.post-author) { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
-/* 메인 학습기록: 작업노트와 같은 글꼴, 짧고 빠르게 읽히는 카드 */
+/* 메인 학습기록: 날짜와 제목을 빠르게 훑는 목록 */
 .blog-home .blog-hero { min-height: 400px; padding: 64px 0; gap: 60px; }
 .blog-home .blog-hero h1,
 .blog-home .post-section-heading h2,
@@ -182,27 +182,68 @@ a { color: inherit; }
 .blog-home .blog-hero h1 { margin: 12px 0 20px; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1.12; }
 .blog-home .blog-intro { padding: 22px; border-top-width: 3px; }
 .blog-home .post-section { padding: 64px 0 76px; }
-.blog-home .post-grid { margin-top: 32px; gap: 14px; }
-.blog-home .post-card { min-height: 245px; }
-.blog-home .post-card > a { padding: 24px; }
+.blog-home .post-grid {
+  margin-top: 32px;
+  display: block;
+  border-top: 1px solid var(--ink);
+}
+.blog-home .post-card,
+.blog-home .post-card-featured {
+  min-height: 0;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+}
+.blog-home .post-card:hover {
+  background: rgb(255 255 255 / 58%);
+  box-shadow: none;
+  transform: none;
+}
+.blog-home .post-card > a {
+  min-height: 112px;
+  padding: 22px 10px;
+  display: grid;
+  grid-template-columns: 116px minmax(250px, .9fr) minmax(280px, 1.2fr) auto;
+  gap: 24px;
+  align-items: center;
+}
+.blog-home .post-meta {
+  display: grid;
+  justify-content: start;
+  gap: 4px;
+  color: var(--muted);
+}
+.blog-home .post-card-featured .post-meta,
+.blog-home .post-card-featured p { color: var(--muted); }
+.blog-home .post-meta span { color: var(--blue-dark); font-size: .64rem; }
 .blog-home .post-card h3 {
-  margin: 22px 0 10px;
+  margin: 0;
   font-family: var(--sans);
-  font-size: 1.35rem;
+  font-size: 1.08rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.5;
   letter-spacing: -.025em;
 }
+.blog-home .post-card h3 br { display: none; }
 .blog-home .post-card p {
+  margin: 0;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  color: var(--muted);
+  font-size: .84rem;
   line-height: 1.6;
 }
-.blog-home .post-tags { margin: 14px 0 16px; gap: 5px; }
-.blog-home .post-tags li { padding: 3px 8px; }
-.blog-home .post-card strong { margin-top: auto; }
+.blog-home .post-tags { display: none; }
+.blog-home .post-card strong,
+.blog-home .post-card-featured strong {
+  margin: 0;
+  color: var(--blue-dark);
+  white-space: nowrap;
+}
 .blog-home .blog-topics { padding: 56px 0; }
 
 .hero, .section, .site-footer {
@@ -711,6 +752,12 @@ a { color: inherit; }
   .blog-hero, .blog-topics, .form-layout { grid-template-columns: 1fr; gap: 42px; }
   .blog-hero { min-height: auto; padding: 72px 0; }
   .post-grid { grid-template-columns: 1fr; }
+  .blog-home .post-card > a {
+    min-height: 96px;
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: 16px;
+  }
+  .blog-home .post-card p { display: none; }
   .post-section-heading { align-items: start; flex-direction: column; }
   .profile-card { grid-template-columns: 1fr; }
   .hero { min-height: auto; padding: 72px 0 90px; grid-template-columns: 1fr; gap: 70px; }
@@ -746,6 +793,15 @@ a { color: inherit; }
 }
 
 @media (max-width: 520px) {
+  .blog-home .post-card > a {
+    padding: 18px 4px;
+    grid-template-columns: 1fr auto;
+    gap: 7px 14px;
+  }
+  .blog-home .post-meta { grid-column: 1 / -1; display: flex; gap: 10px; }
+  .blog-home .post-card h3 { font-size: 1rem; }
+  .blog-home .post-card strong { font-size: 0; }
+  .blog-home .post-card strong::after { content: '→'; font-size: .9rem; }
   .hero-actions { align-items: flex-start; flex-direction: column; }
   .site-footer { padding: 28px 0; align-items: flex-start; flex-direction: column; justify-content: center; gap: 2px; }
   .site-footer p { margin: 2px 0; }
