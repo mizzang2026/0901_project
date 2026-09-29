@@ -26,6 +26,7 @@
       <a href="#flow">3. 작동 순서</a>
       <a href="#status">4. 현재 상태</a>
       <a href="#todo">5. 할 일</a>
+      <a href="#practice">6. 실습 전체 순서</a>
     </nav>
 
     <section id="one-line" class="study-section">
@@ -117,6 +118,78 @@
           <tr><th>화면이 이상함</th><td>API의 실제 JSON과 React가 기대하는 데이터 모양</td></tr>
         </tbody>
       </table></div>
+    </section>
+
+    <section id="practice" class="study-section">
+      <h2>8. 실습으로 따라 하는 전체 순서</h2>
+      <p>처음부터 다시 작업할 때는 아래의 <strong>GitHub → Vercel → Supabase → 연결 확인</strong> 순서로 진행합니다.</p>
+
+      <h3>1단계 — GitHub 저장소 만들기</h3>
+      <ol class="study-steps">
+        <li>GitHub에서 <strong>New repository</strong>를 누른다.</li>
+        <li>저장소 이름과 설명을 입력하고 공개 여부를 선택한다. 키나 특별한 설정값이 있다면 <strong>Private</strong>을 선택한다.</li>
+        <li><strong>Create repository</strong>를 눌러 저장소를 만든다.</li>
+        <li>GitHub에 표시된 저장소 주소를 복사하고, 프로젝트 폴더에서 아래 명령을 차례로 실행한다.</li>
+      </ol>
+      <pre><code>git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin 저장소_주소
+git push -u origin main</code></pre>
+      <p><code>.gitignore</code>는 GitHub에 올리지 않을 파일을 지정합니다. 특히 <code>.env</code>, <code>.env.local</code>, 비밀번호, 토큰, 비밀키는 절대 커밋하지 않습니다.</p>
+
+      <h3>2단계 — Vercel에 프론트엔드 배포하기</h3>
+      <ol class="study-steps">
+        <li>Vercel에 GitHub 계정으로 가입하거나 로그인한다.</li>
+        <li><strong>Add New → Project</strong>에서 GitHub 저장소를 Import한다.</li>
+        <li><strong>Root Directory</strong>를 <code>frontend</code>로 지정한다.</li>
+        <li>Framework는 <code>Vite</code>, Build Command는 <code>npm run build</code>, Output Directory는 <code>dist</code>인지 확인한다.</li>
+        <li>Deploy 후 Build Log와 실제 화면을 확인한다.</li>
+        <li>Settings의 환경 변수에 공개 가능한 프론트엔드 설정만 등록하고 다시 배포한다.</li>
+      </ol>
+      <pre><code>VITE_API_URL=https://프로젝트-ref.supabase.co/functions/v1</code></pre>
+      <p>Vercel Access Token이 필요하면 계정의 <strong>Settings → Tokens</strong>에서 만들고 로컬 <code>.env</code>에만 보관합니다. 토큰은 생성 직후 한 번만 보일 수 있으므로 안전한 곳에 보관합니다.</p>
+
+      <h3>3단계 — Supabase 프로젝트 만들기</h3>
+      <ol class="study-steps">
+        <li>Supabase에 GitHub 계정으로 가입하거나 로그인한다.</li>
+        <li>Organization을 만들고 <strong>New project</strong>를 선택한다.</li>
+        <li>프로젝트 이름과 Database Password를 정하고, 가까운 Region(예: Seoul)을 선택한다.</li>
+        <li>프로젝트가 만들어지면 Project URL과 API 키를 확인한다.</li>
+        <li>백엔드 코드를 Supabase 방식의 <strong>Edge Function</strong>으로 배포한다.</li>
+        <li>migration 파일을 DB에 적용해 필요한 테이블을 만든다.</li>
+      </ol>
+
+      <h3>4단계 — 키와 환경 변수 구분하기</h3>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>값</th><th>용도</th><th>보관 위치</th></tr></thead>
+        <tbody>
+          <tr><th><code>SUPABASE_URL</code></th><td>Supabase 프로젝트 주소</td><td>백엔드 환경 변수</td></tr>
+          <tr><th><code>SUPABASE_ANON_KEY</code></th><td>브라우저용 공개 키(RLS 전제)</td><td>필요한 경우 프론트엔드</td></tr>
+          <tr><th><code>SUPABASE_SERVICE_ROLE_KEY</code></th><td>관리 권한이 있는 비밀키</td><td>백엔드에만 보관</td></tr>
+          <tr><th><code>SUPABASE_ACCESS_TOKEN</code></th><td>CLI가 프로젝트에 접근할 때 사용</td><td>로컬 환경 변수에만 보관</td></tr>
+          <tr><th><code>VERCEL_ACCESS_TOKEN</code></th><td>Vercel CLI·자동화 인증</td><td>로컬 환경 변수에만 보관</td></tr>
+        </tbody>
+      </table></div>
+      <p class="study-warning"><strong>주의:</strong> Service Role Key와 Access Token은 공개 키가 아닙니다. GitHub 또는 브라우저에서 실행되는 frontend 코드에 넣지 않습니다.</p>
+
+      <h3>5단계 — Supabase CLI로 연결하고 반영하기</h3>
+      <pre><code>cd backend
+npx supabase link --project-ref 프로젝트-ref
+npx supabase db push
+npx supabase functions deploy api</code></pre>
+      <p>migration은 DB 변경 이력을 순서대로 남기는 설계 파일입니다. 파일을 만든 것만으로 원격 DB가 바뀌지는 않으며, <code>db push</code>로 적용해야 합니다.</p>
+
+      <h3>6단계 — 마지막 연결 확인</h3>
+      <ol class="study-checklist">
+        <li><input type="checkbox"> <span>GitHub에서 최신 코드와 <code>.gitignore</code>를 확인한다.</span></li>
+        <li><input type="checkbox"> <span>Vercel의 Domain으로 접속해 화면이 열리는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span>Vercel의 <code>VITE_API_URL</code>이 Edge Function 주소와 맞는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span>Edge Function API가 정상 응답하는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span>Supabase Table Editor에서 데이터가 실제로 저장되는지 확인한다.</span></li>
+      </ol>
+      <p class="study-keyline"><strong>기억할 순서:</strong> 코드는 GitHub에 보관 → 화면은 Vercel에 배포 → 서버는 Edge Function에 배포 → DB는 migration으로 반영 → 환경 변수로 서로 연결</p>
     </section>
 
     <section class="study-conclusion">
