@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="0929 사용자 기능 점검과 다음 개발 계획 학습 기록">
+  <title>0929 학습 정리 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css?v=20260929-1">
+  <script src="./js/header.js?v=20260929-1" defer></script>
+  <script src="./js/main.js?v=20260928-2" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="study-sheet">
+    <header class="study-sheet-header">
+      <p>2026.09.29 학습 기록</p>
+      <h1>배포된 서비스의 사용자 기능 점검하기</h1>
+      <p>Vercel과 Supabase 화면을 함께 열고 <strong>가입 → 로그인 → 글 → 댓글 → 반응</strong> 순서로 실제 작동 여부를 확인했습니다.</p>
+    </header>
+
+    <nav class="study-sheet-index" aria-label="페이지 목차">
+      <a href="#prepare">1. 준비</a>
+      <a href="#user-test">2. 사용자 기능 점검</a>
+      <a href="#admin">3. 관리자 기능</a>
+      <a href="#next">4. 다음 시간</a>
+      <a href="#flow">5. 기억할 순서</a>
+    </nav>
+
+    <section id="prepare" class="study-section">
+      <h2>1. 작업 전 준비</h2>
+      <p class="study-keyline"><strong>Vercel</strong>, <strong>Supabase</strong>, 실제 <strong>인터넷 페이지</strong>를 모두 열어 놓고 작업을 시작합니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>화면</th><th>확인하는 내용</th></tr></thead>
+        <tbody>
+          <tr><th>인터넷 페이지</th><td>사용자에게 보이는 화면과 버튼의 실제 동작</td></tr>
+          <tr><th>Supabase</th><td>사용자와 게시글·댓글 데이터가 실제로 저장되는지</td></tr>
+          <tr><th>Vercel</th><td>최신 배포 상태와 오류 로그, 환경 변수</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="user-test" class="study-section">
+      <h2>2. 사용자 기능 점검 순서</h2>
+      <ol class="study-checklist">
+        <li><input type="checkbox"> <span><strong>회원 생성 확인</strong> — 회원가입 후 Supabase 사용자 목록에 새 사용자가 추가됐는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span><strong>로그인·회원가입</strong> — 메인 화면에서 두 기능이 정상적으로 동작하는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span><strong>프로필 전환</strong> — 로그인 후 프로필 버튼을 눌렀을 때 내 프로필 화면으로 이동하는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span><strong>게시글 작성</strong> — 로그인한 사용자가 게시글을 작성하고 저장할 수 있는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span><strong>다른 사용자 댓글</strong> — 다른 계정으로 로그인해 작성된 게시글에 댓글을 남길 수 있는지 확인한다.</span></li>
+        <li><input type="checkbox"> <span><strong>게시글 반응</strong> — 조회수, 좋아요, 싫어요가 각각 정상적으로 작동하는지 확인한다.</span></li>
+      </ol>
+      <p class="study-warning"><strong>중요:</strong> 화면에서 버튼이 눌리는 것만 보지 않고, Supabase에서 해당 데이터가 실제로 생성되거나 변경됐는지도 함께 확인합니다.</p>
+    </section>
+
+    <section class="study-section">
+      <h2>3. 사용자 흐름별 확인 위치</h2>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>사용자 행동</th><th>웹페이지 확인</th><th>Supabase 확인</th></tr></thead>
+        <tbody>
+          <tr><th>회원가입</th><td>가입 완료 및 로그인 가능</td><td>Auth 사용자 목록과 프로필</td></tr>
+          <tr><th>게시글 작성</th><td>목록과 상세 화면에 새 글 표시</td><td><code>posts</code> 데이터</td></tr>
+          <tr><th>댓글 작성</th><td>게시글 아래 댓글 표시</td><td><code>comments</code> 데이터</td></tr>
+          <tr><th>좋아요·싫어요</th><td>숫자와 선택 상태 변경</td><td><code>post_reactions</code> 데이터</td></tr>
+          <tr><th>게시글 조회</th><td>조회수 반영</td><td>조회 기록 또는 조회수 데이터</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="admin" class="study-section">
+      <h2>4. 관리자 페이지에서 필요한 기능</h2>
+      <ul class="study-columns">
+        <li><strong>신고 관리</strong> — 접수된 신고 확인과 처리</li>
+        <li><strong>백업</strong> — 데이터 보관과 복구 준비</li>
+        <li><strong>공지사항</strong> — 공지 작성과 관리</li>
+        <li><strong>이용약관</strong> — 서비스 약관 관리</li>
+        <li><strong>개인정보처리방침</strong> — 개인정보 안내 관리</li>
+        <li><strong>1:1 문의</strong> — 사용자 문의 확인과 답변</li>
+      </ul>
+    </section>
+
+    <section id="next" class="study-section">
+      <h2>5. 다음 시간에 할 일</h2>
+      <ol class="study-steps">
+        <li><strong>관리자 페이지 매칭</strong> — 실제 데이터와 관리자 화면을 연결한다.</li>
+        <li><strong>운영 기능</strong> — 공지사항, 1:1 문의, 신고 기능을 만든다.</li>
+        <li><strong>푸터 정보</strong> — 개인정보처리방침과 이용약관 링크를 추가한다.</li>
+        <li><strong>소셜 로그인</strong> — 카카오 로그인 추가를 검토한다.</li>
+        <li><strong>결제와 확장 기능</strong> — 토스페이먼츠 결제 모듈, 뉴스레터 등의 필요성을 검토한다.</li>
+        <li><strong>정식 공개 준비</strong> — 도메인 구매·연결, SEO, 서비스 주소 매칭을 진행한다.</li>
+      </ol>
+      <p>도메인은 가비아 등의 등록 업체에서 이벤트와 갱신 비용을 함께 비교합니다. 수업 메모 기준 예상 비용은 1년에 약 2만 원이지만, 실제 구매 시점의 가격을 다시 확인합니다.</p>
+    </section>
+
+    <section id="flow" class="study-conclusion">
+      <h2>오늘의 핵심 순서</h2>
+      <p><strong>사용자가 화면에서 실행 → Supabase에서 데이터 확인 → 문제가 있으면 Vercel 로그와 API 확인</strong></p>
+      <p>한 기능씩 계정을 바꿔 가며 실제 사용자 흐름 전체를 시험합니다.</p>
+    </section>
+
+    <nav class="study-page-nav" aria-label="학습 기록 이동"><a href="./0928.html">← 0928 학습</a><a href="./index.html">학습일지 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
