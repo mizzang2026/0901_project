@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Supabase 인증과 DB 마이그레이션, Edge Function, Vercel 배포 및 운영 기능 구현을 정리한 1006 학습 기록">
+  <title>1006 학습 정리 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css?v=20261006-1">
+  <script src="./js/header.js?v=20260929-2" defer></script>
+  <script src="./js/main.js?v=20260928-2" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="study-sheet">
+    <header class="study-sheet-header">
+      <p>2026.10.06 학습 기록</p>
+      <h1>Supabase와 Vercel로 운영 기능 완성하기</h1>
+      <p>인증 토큰의 역할을 구분하고 <strong>DB 마이그레이션 → Edge Function → 프런트엔드</strong> 순서로 배포했습니다. 문의·신고, 약관 모달, 관리자 데이터 차트까지 실제 서비스에 연결했습니다.</p>
+    </header>
+
+    <nav class="study-sheet-index" aria-label="페이지 목차">
+      <a href="#auth">1. 인증과 연결</a>
+      <a href="#deploy">2. 배포 순서</a>
+      <a href="#features">3. 운영 기능</a>
+      <a href="#dashboard">4. 관리자 차트</a>
+      <a href="#security">5. 보안</a>
+      <a href="#flow">6. 핵심 흐름</a>
+    </nav>
+
+    <section id="auth" class="study-section">
+      <h2>1. Supabase 키는 역할이 서로 다르다</h2>
+      <p class="study-keyline"><strong>.env 파일에 값이 있어도 CLI가 자동으로 읽는 것은 아닙니다.</strong> 실행 중인 터미널의 환경 변수로 불러온 뒤 사용해야 합니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>키</th><th>사용 위치</th><th>주의할 점</th></tr></thead>
+        <tbody>
+          <tr><th><code>SUPABASE_ACCESS_TOKEN</code></th><td>CLI 로그인, 프로젝트 조회·링크·배포</td><td>새 토큰 발급 시 이 값만 교체</td></tr>
+          <tr><th><code>SUPABASE_ANON_KEY</code></th><td>브라우저의 제한된 API 접근</td><td>RLS와 서버 검증을 함께 사용</td></tr>
+          <tr><th><code>SUPABASE_SERVICE_ROLE_KEY</code></th><td>Edge Function의 관리자 DB 작업</td><td>프런트엔드와 공개 저장소에 절대 노출 금지</td></tr>
+        </tbody>
+      </table></div>
+      <p class="study-warning"><strong>확인 방법:</strong> CLI가 <code>Unauthorized</code>를 반환하면 네트워크보다 Access Token의 만료·취소·오입력을 먼저 확인합니다. API의 <code>/health</code> 응답과 CLI 인증은 별개의 점검 항목입니다.</p>
+    </section>
+
+    <section id="deploy" class="study-section">
+      <h2>2. 안전한 배포 순서</h2>
+      <ol class="study-steps">
+        <li><strong>로컬 검증</strong> — 프런트 lint와 production build를 먼저 통과시킨다.</li>
+        <li><strong>프로젝트 링크</strong> — 프로젝트 ref를 확인하고 로컬 Supabase 폴더를 원격 프로젝트에 연결한다.</li>
+        <li><strong>DB dry-run</strong> — 실제 반영 전에 적용될 SQL 마이그레이션 목록만 확인한다.</li>
+        <li><strong>DB push</strong> — 신규 테이블과 정책을 적용하고 로컬·원격 마이그레이션 이력을 비교한다.</li>
+        <li><strong>Edge Function 배포</strong> — 새 DB 구조를 사용하는 서버 API를 배포하고 <code>ACTIVE</code> 상태를 확인한다.</li>
+        <li><strong>프런트 배포</strong> — 마지막에 Vercel production을 배포하고 운영 별칭 연결을 확인한다.</li>
+      </ol>
+      <p class="study-keyline">데이터 구조가 먼저, 그 구조를 사용하는 API가 다음, 사용자 화면이 마지막입니다. 이 순서를 지키면 새 화면이 아직 없는 API나 테이블을 호출하는 시간을 줄일 수 있습니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>단계</th><th>오늘 확인한 결과</th></tr></thead>
+        <tbody>
+          <tr><th>Database</th><td>문의와 신고 마이그레이션 적용 및 이력 일치</td></tr>
+          <tr><th>Edge Function</th><td>API 배포 후 활성 상태와 DB 연결 확인</td></tr>
+          <tr><th>Vercel</th><td>빌드 성공, production READY, 운영 주소 별칭 연결</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="features" class="study-section">
+      <h2>3. 사용자와 운영자를 연결하는 기능</h2>
+      <ul class="study-columns">
+        <li><strong>1:1 문의</strong> — 사용자가 문의를 남기고 관리자 답변과 상태를 확인</li>
+        <li><strong>신고 접수</strong> — 게시글·댓글 신고 사유와 상세 내용을 저장</li>
+        <li><strong>내 신고 내역</strong> — 본인이 접수한 신고만 프로필에서 확인</li>
+        <li><strong>관리자 처리</strong> — 신고 기각, 게시글 숨김, 댓글 삭제, 처리 완료</li>
+        <li><strong>이용약관</strong> — 푸터에서 모달로 서비스 이용 기준 안내</li>
+        <li><strong>개인정보처리방침</strong> — 처리 목적·항목·기간·파기·위탁·권리 안내</li>
+      </ul>
+      <p class="study-warning"><strong>권한의 핵심:</strong> 사용자의 신고 목록은 요청한 로그인 사용자의 ID와 <code>reporter_id</code>가 같은 데이터만 조회해야 합니다. 관리자 전체 조회 API를 그대로 재사용하면 다른 사용자의 신고가 노출될 수 있습니다.</p>
+      <p>약관과 개인정보처리방침은 기본 문구만 넣고 끝내는 문서가 아닙니다. 실제 운영자 연락처, 정확한 보유 기간, 외부 서비스와 국외 처리 정보를 운영 환경에 맞게 확정해야 합니다.</p>
+    </section>
+
+    <section id="dashboard" class="study-section">
+      <h2>4. 숫자를 차트로 바꾸면 상태가 빨리 보인다</h2>
+      <p>관리자 메인 화면에 전체 숫자뿐 아니라 데이터의 변화와 비율을 보여 주는 시각화를 추가했습니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>시각화</th><th>읽을 수 있는 내용</th><th>표현 방식</th></tr></thead>
+        <tbody>
+          <tr><th>최근 7일 활동</th><td>신규 회원, 게시글, 댓글의 날짜별 변화</td><td>그룹 막대 차트</td></tr>
+          <tr><th>게시글 구성</th><td>카테고리별 게시글 개수와 비율</td><td>도넛 차트와 범례</td></tr>
+          <tr><th>운영 처리 현황</th><td>문의 답변율과 신고 처리율, 대기 건수</td><td>진행률 막대</td></tr>
+        </tbody>
+      </table></div>
+      <p class="study-keyline">작은 대시보드는 외부 차트 라이브러리 없이 CSS 막대와 <code>conic-gradient</code>만으로도 만들 수 있습니다. 데이터가 복잡해질 때 전용 라이브러리를 검토합니다.</p>
+    </section>
+
+    <section id="security" class="study-section">
+      <h2>5. 오늘 확인한 보안 원칙</h2>
+      <ol class="study-checklist">
+        <li><input type="checkbox" checked disabled> <span><strong>비밀키 비공개</strong> — 토큰 값을 터미널 출력, 화면 캡처, GitHub에 남기지 않는다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>서비스 역할 키 분리</strong> — Service Role Key는 서버에서만 사용한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>본인 데이터 제한</strong> — 사용자 API는 인증된 ID를 기준으로 필터링한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>배포 전 검증</strong> — SQL dry-run, lint, build를 먼저 실행한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>환경 파일 제외</strong> — <code>.env*</code>와 배포 도구의 로컬 설정 폴더를 <code>.gitignore</code>에 넣는다.</span></li>
+      </ol>
+    </section>
+
+    <section id="flow" class="study-conclusion">
+      <h2>오늘의 핵심 흐름</h2>
+      <p><strong>키의 역할 구분 → CLI 인증 확인 → DB dry-run과 push → Edge Function 배포 → 프런트 빌드와 Vercel 배포 → 운영 화면 확인</strong></p>
+      <p>기능을 만드는 것뿐 아니라 권한, 데이터 공개 범위, 배포 순서, 운영자가 확인할 지표까지 함께 설계해야 서비스가 완성됩니다.</p>
+    </section>
+
+    <nav class="study-page-nav" aria-label="학습 기록 이동"><a href="./0929.html">← 0929 학습</a><a href="./index.html">학습일지 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>

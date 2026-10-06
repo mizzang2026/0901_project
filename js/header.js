@@ -12,7 +12,8 @@
     ['0921.html', '0921 · 실제 데이터 연동'],
     ['0922.html', '0922 · 배포 준비'],
     ['0928.html', '0928 · 연결과 배포 순서'],
-    ['0929.html', '0929 · 사용자 기능 점검']
+    ['0929.html', '0929 · 사용자 기능 점검'],
+    ['1006.html', '1006 · 운영 기능 완성']
   ];
 
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
