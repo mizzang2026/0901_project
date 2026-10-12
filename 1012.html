@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="카카오 로그인 연동, KOE006 해결, GitHub·Vercel·Supabase 배포, 토큰과 UTC 시간을 정리한 1012 학습 기록">
+  <title>1012 학습 정리 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css?v=20261012-1">
+  <script src="./js/header.js?v=20260929-2" defer></script>
+  <script src="./js/main.js?v=20260928-2" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="study-sheet">
+    <header class="study-sheet-header">
+      <p>2026.10.12 학습 기록</p>
+      <h1>Supabase와 카카오 로그인 연결 완성하기</h1>
+      <p>카카오 OAuth의 두 단계 리디렉션을 이해하고 <strong>KOE006 오류 해결 → 운영 배포 → 실제 로그인 진입 확인</strong>까지 진행했습니다. Supabase 토큰의 만료와 UTC 시간 표시도 함께 정리했습니다.</p>
+    </header>
+
+    <nav class="study-sheet-index" aria-label="페이지 목차">
+      <a href="#oauth">1. 로그인 구조</a>
+      <a href="#settings">2. 필수 설정</a>
+      <a href="#koe006">3. KOE006 해결</a>
+      <a href="#deploy">4. 배포와 검증</a>
+      <a href="#token">5. 토큰 관리</a>
+      <a href="#utc">6. UTC 시간</a>
+      <a href="#flow">7. 핵심 흐름</a>
+    </nav>
+
+    <section id="oauth" class="study-section">
+      <h2>1. 카카오 로그인은 두 번 리디렉션된다</h2>
+      <p class="study-keyline"><strong>카카오에 등록하는 주소와 Supabase에 등록하는 주소는 서로 다릅니다.</strong> 로그인 과정에서 카카오가 먼저 Supabase로 돌아오고, Supabase가 다시 우리 웹사이트로 사용자를 보냅니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>단계</th><th>이동 방향</th><th>등록 위치</th></tr></thead>
+        <tbody>
+          <tr><th>1차 콜백</th><td>카카오 → Supabase</td><td>카카오 Developers의 REST API 키 설정</td></tr>
+          <tr><th>2차 콜백</th><td>Supabase → 웹사이트의 <code>/auth/callback</code></td><td>Supabase Authentication URL Configuration</td></tr>
+        </tbody>
+      </table></div>
+      <p>전체 로그인 흐름은 다음과 같습니다.</p>
+      <p class="study-keyline"><strong>운영 사이트 → Supabase OAuth → 카카오 로그인·동의 → Supabase callback → 운영 사이트 callback → 프로필</strong></p>
+    </section>
+
+    <section id="settings" class="study-section">
+      <h2>2. 카카오와 Supabase의 필수 설정</h2>
+      <ol class="study-steps">
+        <li><strong>카카오 로그인 활성화</strong> — 카카오 Developers의 카카오 로그인 일반 설정을 <code>ON</code>으로 바꾼다.</li>
+        <li><strong>REST API 키 사용</strong> — JavaScript 키가 아니라 Supabase에 등록한 REST API 키를 사용한다.</li>
+        <li><strong>Client Secret 확인</strong> — REST API 키에 연결된 Client Secret을 활성화하고 Supabase 값과 일치시킨다.</li>
+        <li><strong>카카오 Redirect URI</strong> — <code>https://PROJECT_REF.supabase.co/auth/v1/callback</code>을 등록한다.</li>
+        <li><strong>Supabase Site URL</strong> — 실제 Vercel 운영 사이트의 origin을 등록한다.</li>
+        <li><strong>Supabase Redirect URLs</strong> — 운영 사이트의 <code>/auth/callback</code>과 필요한 로컬 개발 주소를 허용한다.</li>
+        <li><strong>동의항목</strong> — 닉네임, 프로필 이미지, 사용할 경우 이메일 동의항목을 설정한다.</li>
+      </ol>
+      <p class="study-warning"><strong>이메일을 받지 않을 때:</strong> 카카오 앱에서 이메일 동의 권한을 사용할 수 없다면 Supabase Kakao Provider의 <code>Allow users without an email</code>을 활성화합니다.</p>
+    </section>
+
+    <section id="koe006" class="study-section">
+      <h2>3. KOE006은 Redirect URI 불일치 오류다</h2>
+      <p><code>KOE006</code>은 카카오 로그인 요청에 포함된 <code>redirect_uri</code>가 카카오 Developers에 등록된 값과 정확히 같지 않을 때 발생합니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>점검 항목</th><th>확인할 내용</th></tr></thead>
+        <tbody>
+          <tr><th>키 종류</th><td>Redirect URI를 JavaScript 키가 아닌 REST API 키에 등록했는가?</td></tr>
+          <tr><th>프로젝트</th><td>Supabase Provider의 Client ID와 같은 카카오 앱·키를 수정했는가?</td></tr>
+          <tr><th>프로토콜</th><td><code>http</code>와 <code>https</code>가 정확히 일치하는가?</td></tr>
+          <tr><th>경로</th><td><code>/auth/v1/callback</code> 철자와 슬래시가 정확한가?</td></tr>
+          <tr><th>마지막 슬래시</th><td>등록값과 요청값 중 한쪽에만 불필요한 <code>/</code>가 붙지 않았는가?</td></tr>
+          <tr><th>브라우저 상태</th><td>수정 후 기존 탭을 닫고 시크릿 창에서 새 요청으로 시험했는가?</td></tr>
+        </tbody>
+      </table></div>
+      <p class="study-keyline">오류 문구만 보지 않고 Supabase의 <code>/auth/v1/authorize</code> 응답에 있는 Location 헤더를 확인하면 실제 <code>client_id</code>와 <code>redirect_uri</code>를 정확히 찾을 수 있습니다.</p>
+    </section>
+
+    <section id="deploy" class="study-section">
+      <h2>4. GitHub, Vercel, Supabase 반영 확인</h2>
+      <ol class="study-checklist">
+        <li><input type="checkbox" checked disabled> <span><strong>로컬 검증</strong> — lint와 production build가 성공하는지 확인한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>GitHub</strong> — 변경 커밋을 <code>main</code> 브랜치에 push하고 원격 상태를 확인한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>Vercel</strong> — Production 배포가 <code>READY</code>인지, 운영 도메인이 새 배포에 연결됐는지 확인한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>운영 번들</strong> — 배포된 JavaScript에 카카오 로그인과 callback 코드가 실제 포함됐는지 확인한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>Supabase</strong> — Edge Function의 health 응답과 DB 연결 상태를 확인한다.</span></li>
+        <li><input type="checkbox" checked disabled> <span><strong>OAuth 진입</strong> — 운영 주소에서 카카오 계정 로그인 화면까지 정상 도달하는지 확인한다.</span></li>
+      </ol>
+      <p class="study-warning"><strong>주의:</strong> 배포 명령이 성공했다는 메시지만으로 끝내지 않습니다. 운영 도메인의 HTML과 번들 해시, 실제 API 응답을 다시 조회해야 캐시나 잘못된 Root Directory 문제를 찾을 수 있습니다.</p>
+    </section>
+
+    <section id="token" class="study-section">
+      <h2>5. Supabase 토큰은 용도와 만료를 구분한다</h2>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>종류</th><th>역할</th><th>만료 영향</th></tr></thead>
+        <tbody>
+          <tr><th>Personal Access Token</th><td>CLI, Management API, 자동 배포</td><td>만료되면 이후 관리·배포 명령이 실패</td></tr>
+          <tr><th>브라우저용 공개 키</th><td>클라이언트의 제한된 Supabase 접근</td><td>PAT와 별개이며 RLS로 보호</td></tr>
+          <tr><th>Service Role Key</th><td>서버의 관리자 권한 작업</td><td>프런트와 GitHub에 절대 공개하지 않음</td></tr>
+        </tbody>
+      </table></div>
+      <p>기존 Personal Access Token의 만료일은 늘릴 수 없습니다. 만료 전에 새 Scoped Token을 만들고 정상 동작을 확인한 뒤 기존 토큰을 폐기합니다.</p>
+      <ul class="study-columns">
+        <li><strong>범위 제한</strong> — 필요한 프로젝트 하나만 선택</li>
+        <li><strong>최소 권한</strong> — DB, Migration, Edge Function 등 작업에 필요한 권한만 부여</li>
+        <li><strong>안전한 교체</strong> — 새 토큰을 먼저 시험한 뒤 기존 토큰 삭제</li>
+        <li><strong>비밀 유지</strong> — 채팅, 소스 코드, 커밋, 터미널 출력에 토큰을 남기지 않음</li>
+      </ul>
+      <p class="study-keyline">관리용 PAT가 만료돼도 이미 배포된 사이트와 카카오 로그인이 즉시 중단되는 것은 아닙니다. 다음 CLI 배포나 관리 작업을 하기 전에 새 토큰으로 교체하면 됩니다.</p>
+    </section>
+
+    <section id="utc" class="study-section">
+      <h2>6. Supabase의 <code>+00</code> 시간은 UTC다</h2>
+      <p><code>2026-10-12 05:42:26.020952+00</code>에서 <code>+00</code>은 세계 표준시 UTC를 뜻합니다. 특정 미국 지역 시간이 아니라 전 세계 시스템이 함께 사용하는 기준 시간입니다.</p>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>표시</th><th>뜻</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><th>UTC</th><td>세계 표준시, <code>UTC+0</code></td><td>오전 5시 42분</td></tr>
+          <tr><th>한국 표준시</th><td><code>UTC+9</code></td><td>같은 순간 오후 2시 42분</td></tr>
+        </tbody>
+      </table></div>
+      <p>DB에는 UTC로 저장하고 사용자 화면에서 한국 시간으로 변환하는 방식이 안전합니다.</p>
+      <pre><code>new Date(created_at).toLocaleString('ko-KR', {
+  timeZone: 'Asia/Seoul',
+})</code></pre>
+      <p>SQL에서 한국 시간으로 확인할 때는 다음처럼 변환할 수 있습니다.</p>
+      <pre><code>select created_at at time zone 'Asia/Seoul'
+from 테이블명;</code></pre>
+    </section>
+
+    <section id="flow" class="study-conclusion">
+      <h2>오늘의 핵심 흐름</h2>
+      <p><strong>카카오 REST API 키 확인 → Supabase callback 등록 → 앱 callback 허용 → KOE006 실제 요청값 확인 → GitHub push → Vercel 운영 배포 → Supabase·OAuth 검증</strong></p>
+      <p>OAuth 문제는 주소 하나만 보는 것이 아니라 어떤 서비스가 누구에게 돌아오는 주소인지 구분해야 해결할 수 있습니다. 배포 후에는 명령 결과와 함께 실제 운영 화면과 네트워크 흐름까지 확인합니다.</p>
+    </section>
+
+    <nav class="study-page-nav" aria-label="학습 기록 이동"><a href="./1006.html">← 1006 학습</a><a href="./index.html">학습일지 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
