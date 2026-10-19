@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="토스페이먼츠 테스트 환경에서 크레딧 충전과 월 구독 결제를 구현하며 배운 승인, 빌링키, 중복 지급 방지와 정기결제 흐름 정리">
+  <title>1013 학습 정리 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css?v=20261012-1">
+  <script src="./js/header.js?v=20261013-1" defer></script>
+  <script src="./js/main.js?v=20260928-2" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="study-sheet">
+    <header class="study-sheet-header">
+      <p>2026.10.13 학습 기록</p>
+      <h1>토스페이먼츠로 크레딧 충전과 구독 결제 만들기</h1>
+      <p>상점에서 크레딧을 충전하고 월 구독을 신청하는 기능을 만들었습니다. 핵심은 <strong>브라우저의 결제 인증 → 서버의 승인 확인 → DB의 크레딧 지급</strong>을 하나의 흐름으로 연결하는 것입니다.</p>
+      <p class="study-warning">이 기록은 프로젝트의 코드와 구현 문서를 바탕으로 정리했습니다. 구현은 <strong>테스트 키만 허용하는 테스트 결제</strong>이며, 실제 금액을 청구하는 서비스는 아닙니다.</p>
+    </header>
+    <nav class="study-sheet-index" aria-label="페이지 목차">
+      <a href="#difference">1. 두 결제의 차이</a><a href="#structure">2. 역할과 키</a><a href="#credits">3. 크레딧 충전</a><a href="#billing">4. 구독과 빌링키</a><a href="#database">5. DB와 중복 방지</a><a href="#renewal">6. 갱신과 해지</a><a href="#history">7. 결제 내역</a><a href="#review">8. 복습</a>
+    </nav>
+    <section id="difference" class="study-section">
+      <h2>1. 크레딧 충전과 구독은 결제 방식이 다르다</h2>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>구분</th><th>크레딧 충전</th><th>월 구독</th></tr></thead>
+        <tbody>
+          <tr><th>사용한 기능</th><td>토스 V2 주문서형 결제위젯</td><td>자동결제 카드 등록 SDK와 빌링 API</td></tr>
+          <tr><th>결제 시점</th><td>사용자가 충전할 때마다</td><td>첫 결제 후 다음 결제일마다 서버가 청구</td></tr>
+          <tr><th>주요 결과값</th><td>paymentKey, orderId, amount</td><td>authKey, customerKey → 서버에서 billingKey 발급</td></tr>
+          <tr><th>프로젝트 상품 예시</th><td>5,000원 → 5,000크레딧 / 10,000원 → 10,500크레딧</td><td>베이직 월 4,900원 → 500크레딧 / 플러스 월 9,900원 → 1,200크레딧</td></tr>
+        </tbody>
+      </table></div>
+      <p>금액과 지급량은 이 프로젝트의 서버 상품표에 정한 값입니다. 토스페이먼츠가 크레딧을 관리하는 것이 아니라, <strong>우리 서버와 DB가 승인된 주문에 맞춰 크레딧을 지급</strong>합니다.</p>
+    </section>
+    <section id="structure" class="study-section">
+      <h2>2. 화면·서버·DB의 역할과 키 구분</h2>
+      <ul>
+        <li><strong>React / Vercel:</strong> 상품 선택, 결제창 표시, 성공·실패 화면과 프로필 내역 표시.</li>
+        <li><strong>Supabase Edge Function:</strong> 로그인 확인, 주문 생성, 토스 승인·조회·빌링 요청.</li>
+        <li><strong>Supabase DB:</strong> 주문, 구독, 잔액, 크레딧 변동 내역 저장.</li>
+        <li><strong>토스페이먼츠:</strong> 결제 인증과 승인, 카드 등록 및 빌링키 결제 처리.</li>
+      </ul>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>환경 변수</th><th>프로젝트의 테스트 키 접두사</th><th>사용 위치</th></tr></thead>
+        <tbody>
+          <tr><th>TOSS_PAYMENTS_CLIENT_KEY</th><td>test_gck_</td><td>크레딧 결제위젯</td></tr>
+          <tr><th>TOSS_PAYMENTS_SECRET_KEY</th><td>test_gsk_</td><td>서버의 크레딧 결제 승인</td></tr>
+          <tr><th>TOSS_PAYMENTS_BILLING_CLIENT_KEY</th><td>test_ck_</td><td>브라우저의 구독 카드 인증</td></tr>
+          <tr><th>TOSS_PAYMENTS_BILLING_SECRET_KEY</th><td>test_sk_</td><td>서버의 빌링키 발급·구독 청구</td></tr>
+        </tbody>
+      </table></div>
+      <p>브라우저는 <code>/api/payments/config</code>에서 공개 클라이언트 키와 상품 정보를 받습니다. 시크릿 키는 서버 환경 변수와 Edge Function secrets에 두며, 프론트엔드 코드나 GitHub에 넣지 않습니다.</p>
+    </section>
+    <section id="credits" class="study-section">
+      <h2>3. 크레딧 충전: 성공 화면에 왔다고 지급하면 안 된다</h2>
+      <ol class="study-steps">
+        <li>로그인한 사용자가 상품을 선택하면 서버가 주문을 만듭니다. 금액과 지급 크레딧은 서버 상품표로 결정합니다.</li>
+        <li>화면에서 결제수단과 약관을 렌더링하고 토스 결제 인증을 진행합니다.</li>
+        <li>성공 경로로 돌아오면 프론트가 <code>paymentKey</code>, <code>orderId</code>, <code>amount</code>를 우리 서버에 전달합니다.</li>
+        <li>서버가 주문 소유자와 저장된 금액을 검증한 뒤, 토스의 <code>POST /v1/payments/confirm</code>을 호출합니다.</li>
+        <li>승인 결과를 검증하고 DB 트랜잭션으로 주문 완료, 원장 기록, 잔액 증가를 처리합니다.</li>
+      </ol>
+      <p class="study-keyline"><strong>인증은 사용자의 결제 절차이고, 승인은 서버가 결제를 확정하는 절차입니다.</strong> URL의 성공 표시나 브라우저가 보낸 금액만 믿고 크레딧을 지급하지 않습니다.</p>
+    </section>
+    <section id="billing" class="study-section">
+      <h2>4. 구독: 카드 등록 → 빌링키 발급 → 첫 결제</h2>
+      <p><code>customerKey</code>는 고객을 구분하는 식별자, <code>authKey</code>는 카드 등록 인증 후 받은 값, <code>billingKey</code>는 서버에서 자동결제를 요청할 때 사용하는 키입니다.</p>
+      <ol class="study-steps">
+        <li>서버가 고객 식별자와 구독 주문을 준비하고, 사용자가 SDK로 카드 등록을 인증합니다.</li>
+        <li>서버는 돌아온 <code>authKey</code>와 주문의 <code>customerKey</code>를 확인합니다.</li>
+        <li>토스의 <code>POST /v1/billing/authorizations/issue</code>로 빌링키를 발급받아 서버 측 DB에 저장합니다.</li>
+        <li><code>POST /v1/billing/{billingKey}</code>로 첫 결제를 요청합니다.</li>
+        <li>결제가 확인되면 크레딧을 지급하고 구독을 <code>active</code>로 바꾸며 다음 결제일을 저장합니다.</li>
+      </ol>
+      <p class="study-keyline"><strong>빌링키 발급 자체가 결제 완료는 아닙니다.</strong> 카드 등록 후 첫 청구가 성공해야 구독 혜택을 지급합니다. 빌링키는 브라우저 응답에 노출하지 않습니다.</p>
+    </section>
+    <section id="database" class="study-section">
+      <h2>5. 주문·잔액·원장을 나누고 중복 지급을 막는다</h2>
+      <div class="study-table-wrap"><table class="study-table">
+        <thead><tr><th>테이블</th><th>저장하는 내용</th></tr></thead>
+        <tbody>
+          <tr><th>payment_customers</th><td>회원과 토스 customerKey 연결</td></tr>
+          <tr><th>shop_orders</th><td>상품, 금액, 지급량, 결제 상태와 결제 식별자</td></tr>
+          <tr><th>shop_subscriptions</th><td>구독 상태, 빌링키, 다음 결제일, 해지 예약</td></tr>
+          <tr><th>credit_wallets</th><td>회원의 현재 크레딧 잔액</td></tr>
+          <tr><th>credit_ledger</th><td>크레딧이 언제, 어떤 주문 때문에 변했는지 기록</td></tr>
+        </tbody>
+      </table></div>
+      <p>결제 후 새로고침하거나 네트워크 문제로 같은 요청을 다시 보내도 크레딧은 한 번만 지급되어야 합니다. 이를 위해 토스 요청에는 주문 기반 <strong>멱등키</strong>를 쓰고, DB의 <code>fulfill_shop_order</code>에서는 주문 잠금과 원장의 고유 제약조건을 사용합니다.</p>
+      <p>주문 완료·원장 추가·잔액 변경을 하나의 트랜잭션으로 묶으면 일부만 저장되는 상황을 막을 수 있습니다. 타임아웃이 났을 때도 새 주문으로 무조건 재결제하지 않고 기존 주문의 토스 결과를 확인합니다.</p>
+      <p>결제 테이블은 RLS와 권한 제한을 적용해 서버의 service-role로 접근합니다. 따라서 API에서도 로그인과 주문 소유권을 반드시 검사해야 합니다.</p>
+    </section>
+    <section id="renewal" class="study-section">
+      <h2>6. 정기결제는 우리 서버가 예약 실행한다</h2>
+      <p>빌링키를 발급받았다고 토스가 우리 상품의 결제 주기를 자동으로 관리하는 것은 아닙니다. 이 프로젝트는 매시간 <code>shop-monthly-renewals</code> 작업을 실행해 결제일이 지난 구독을 찾고 <code>/api/subscriptions/renew</code>로 갱신합니다.</p>
+      <ul>
+        <li><strong>성공:</strong> 해당 회차 주문을 완료하고 크레딧을 지급한 뒤 다음 결제일을 갱신합니다.</li>
+        <li><strong>실패:</strong> 구독을 <code>past_due</code>로 표시하고 하루 후 재시도하도록 기록합니다.</li>
+        <li><strong>해지 예약:</strong> <code>cancel_at_period_end</code>를 설정합니다. 이미 지급한 크레딧은 유지하고 다음 만기에 청구를 중단합니다.</li>
+      </ul>
+      <p>예약 작업 인증에는 <code>PAYMENT_CRON_SECRET</code>을 사용합니다. DB Vault에 보관한 토큰과 서버의 값이 일치해야 합니다.</p>
+      <p class="study-warning"><strong>구독 해지와 환불은 다릅니다.</strong> 다음 정기결제를 중단하는 것과 이미 결제된 금액을 돌려주는 것은 별도의 처리입니다.</p>
+    </section>
+    <section id="history" class="study-section">
+      <h2>7. 프로필에서 결제·구독·크레딧을 확인한다</h2>
+      <p>프로필에 잔액과 구독 요약, 상태별 결제 내역, 크레딧 변동 내역, 최근 구독 이력을 연결했습니다. 결제·크레딧 내역은 10건씩 보여주고, 승인 정보의 결제수단과 영수증 링크도 저장합니다.</p>
+      <p>주문 상세의 ‘토스 최신 상태 확인’은 서버에서 토스 조회 API를 호출해 상태와 환불 금액을 확인하는 기능입니다. <strong>환불 실행 버튼은 아닙니다.</strong> 확인된 환불 금액에 비례해 보너스를 포함한 지급 크레딧을 회수하며, 반복 조회로 중복 회수되지 않도록 원장 이벤트와 주문 잠금을 사용합니다.</p>
+      <p>문서용 테스트 키는 과거 내역 조회가 제한될 수 있어 저장된 승인 정보를 유지하고 제한을 안내하도록 했습니다.</p>
+    </section>
+    <section id="review" class="study-conclusion">
+      <h2>다시 떠올릴 때 기억할 순서</h2>
+      <p><strong>상품 선택 → 서버 주문 생성 → 토스 인증 → 서버 승인 또는 빌링 청구 → DB 트랜잭션 → 크레딧·내역 표시</strong></p>
+      <ul>
+        <li>크레딧 충전은 결제위젯, 구독은 카드 등록과 빌링키를 사용했다.</li>
+        <li>가격은 서버에서 결정하고, 결제 결과를 확인한 뒤 크레딧을 지급했다.</li>
+        <li>멱등키와 DB 잠금으로 재시도해도 이중 청구·중복 지급을 막도록 구성했다.</li>
+        <li>구독 갱신은 스케줄러가 처리하고, 해지는 다음 결제 중단으로 구현했다.</li>
+      </ul>
+      <p>복습할 프로젝트 파일: <code>docs/shop-payments.md</code>, <code>backend/supabase/functions/api/payments.ts</code>, <code>backend/supabase/migrations/20261013000000_shop_payments.sql</code>, <code>20261013010000_profile_billing_history.sql</code>.</p>
+      <p>테스트할 때는 정상 결제뿐 아니라 금액 불일치, 다른 회원의 주문 접근, 성공 화면 재진입, 결제 실패 후 재시도, 구독 해지 예약도 확인해야 합니다. 실서비스 전환은 라이브 키와 정책, 웹훅 및 운영 모니터링 등을 별도로 준비하는 작업입니다.</p>
+    </section>
+    <nav class="study-page-nav" aria-label="학습 기록 이동"><a href="./1012.html">← 1012 학습</a><a href="./index.html">학습일지 홈 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>
