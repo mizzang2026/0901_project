@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="캡처 기능을 문서로 정의하고 Chrome 확장프로그램으로 구현한 뒤, Electron으로 데스크톱 앱을 만들었습니다. 실제 사용 중 발견한 고정 메뉴 반복, 영역 선택 오류, 복잡한 UI를 차례로 개선했습니다.">
+  <title>1026 학습 정리 | Jules의 기록</title>
+  <link rel="stylesheet" href="./css/style.css?v=20261012-1">
+  <script src="./js/header.js?v=20261029-1" defer></script>
+  <script src="./js/main.js?v=20260928-2" defer></script>
+  <style>
+    .lesson-prompt{margin:22px 0;padding:20px;border:1px solid #cad8cf;border-left:4px solid #33815e;border-radius:8px;background:#f4f8f3}
+    .lesson-prompt>p:first-child{margin:0 0 10px;font-size:.8rem;font-weight:700;color:#286848}
+    .lesson-prompt blockquote{margin:0;line-height:1.85;overflow-wrap:anywhere;white-space:pre-wrap}
+    .lesson-prompt+ p{margin-top:18px}.lesson-status{display:inline-block;padding:4px 9px;border-radius:5px;background:#e7f3e9;color:#276749;font-size:.8rem;font-weight:700}
+    .lesson-status.pending{background:#fff0d4;color:#795b2f}.lesson-links a{overflow-wrap:anywhere}.study-section li{line-height:1.85;margin:6px 0}
+    .study-sheet code{overflow-wrap:anywhere}.lesson-flow{line-height:1.9;overflow-wrap:anywhere}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문 바로가기</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="study-sheet">
+    <header class="study-sheet-header"><p>2026.10.26 학습 기록</p><h1>PageSnap, 크롬 확장에서 Windows 캡처 도구까지</h1><p>캡처 기능을 문서로 정의하고 Chrome 확장프로그램으로 구현한 뒤, Electron으로 데스크톱 앱을 만들었습니다. 실제 사용 중 발견한 고정 메뉴 반복, 영역 선택 오류, 복잡한 UI를 차례로 개선했습니다.</p><p>당일 Codex 대화의 실제 질문과 작업 결과를 바탕으로 정리했습니다. 인용문은 당시 질문이며, 테스트 수와 생성 결과는 당시 기록 기준입니다.</p></header>
+    <nav class="study-sheet-index" aria-label="페이지 목차"><a href="#plan">1. 기능부터 문서로 정리하기</a><a href="#markdown">2. Markdown 문서는 실행 파일이 아니다</a><a href="#extension">3. Chrome 확장프로그램 구현과 설치</a><a href="#scroll">4. 스크롤 캡처에 상단 메뉴가 반복되는 문제</a><a href="#electron">5. Electron으로 데스크톱 앱 만들기</a><a href="#desktop">6. 웹페이지 캡처에서 OS 화면 캡처로 범위 수정</a><a href="#ui">7. 실제 사용에 맞게 작은 캡처 도구창으로 바꾸기</a></nav>
+    <section id="plan" class="study-section"><h2>1. 기능부터 문서로 정리하기</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>해당내용은 먼저 문서폴더에 기능별 문서 정리해서 md 화일로 만들어줘.</blockquote></div><p>작업 프로젝트는 <code>1026_1</code>입니다. 처음에는 프론트·문서 폴더를 만들고, 이후 영문 이름인 <code>frontend</code>와 <code>docs</code>로 변경했습니다. 프로젝트 개요, 전체 화면과 단축키, 드래그 영역, 자동 스크롤, PNG·PDF 저장, 공통 화면과 예외 처리를 문서로 나눴습니다.</p><p>이 단계의 “전체 화면”은 모니터 전체가 아니라 <strong>현재 탭에서 보이는 웹페이지 영역</strong>, “1페이지”는 현재 화면 높이로 정의했습니다. 뒤에 Windows 앱으로 범위를 넓힐 때 이 정의를 다시 확인하게 됩니다.</p></section><section id="markdown" class="study-section"><h2>2. Markdown 문서는 실행 파일이 아니다</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>markdown 문서가 뭐야</blockquote></div><p><code>.md</code>는 Markdown 문서 파일입니다. <code># 제목</code>, <code>- 목록</code>, <code>**강조**</code>처럼 간단한 기호로 내용을 정리합니다. 기능을 설명한 문서만으로는 캡처 프로그램이 실행되지 않습니다.</p><p>VS Code에서 문서를 열고 <code>Ctrl + Shift + V</code>로 미리보기를 확인했습니다. 문서를 검토한 다음 “문서를 기반으로 개발해서 파일을 만들어줘”라고 요청해 구현 단계로 넘어갔습니다.</p></section><section id="extension" class="study-section"><h2>3. Chrome 확장프로그램 구현과 설치</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>문서를 기반으로 개발해서 파일을 만들어줘.</blockquote></div><p>Manifest V3 기반 PageSnap에 현재 화면 촬영, <code>Alt+Shift+S</code> 단축키, 드래그 영역 촬영, 최대 20화면 자동 스크롤, 결과 미리보기와 PNG·PDF 저장을 구현했습니다.</p><p><code>manifest.json</code>은 확장의 이름·버전·권한·실행 코드·단축키를 Chrome에 알려주는 설정 파일입니다. 직접 실행하는 파일이 아닙니다.</p><ol class="study-steps"><li>Chrome에서 <code>chrome://extensions</code>를 엽니다.</li><li>개발자 모드를 켜고 “압축해제된 확장 프로그램을 로드합니다”를 선택합니다.</li><li><code>1026_1/frontend</code> 폴더를 등록합니다.</li><li>일반 웹사이트에서 PageSnap으로 촬영하고 저장을 확인합니다.</li></ol><p>Chrome 내부 설정 화면에서는 촬영할 수 없습니다. 당시 자동 테스트 8개와 브라우저 검증 6개가 통과했지만, 실제 설치 상태의 권한·단축키·다운로드 확인은 별도로 남겨 두었습니다.</p></section><section id="scroll" class="study-section"><h2>4. 스크롤 캡처에 상단 메뉴가 반복되는 문제</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>자동스크롤 캡쳐시... 상단 고정 메뉴가 계속 캡쳐가 같이 되는데... 상단 메뉴는 제외하고 캡쳐하도록 해줘</blockquote></div><p>고정 메뉴는 스크롤을 내려도 화면 위에 계속 남아 있어서 촬영 이미지마다 반복되었습니다. <strong>첫 화면에는 포함하고, 두 번째 화면부터 숨기는 방식</strong>으로 수정했습니다.</p><p>촬영 완료·중지·오류 후에는 숨긴 메뉴를 복원하도록 처리하고 해당 상황을 테스트했습니다. 확장 코드를 바꾸면 확장프로그램을 새로고침하고, 촬영할 웹페이지도 새로고침해야 수정된 동작을 확인할 수 있습니다.</p></section><section id="electron" class="study-section"><h2>5. Electron으로 데스크톱 앱 만들기</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>기존 Chrome 확장 프로그램(Manifest V3)은 유지하면서, Electron을 활용해 Windows, macOS, Linux에서 실행 가능한 설치형 프로그램도 만들어 주세요. 기존 기능과 UI를 최대한 재사용하고, OS별 호환성을 고려해 구현해 주세요.</blockquote></div><p>웹 기술로 만든 화면을 Electron의 데스크톱 창에서 사용하도록 확장했습니다. npm 접근 제한으로 도구 다운로드가 막혔고, 사용자가 설치를 마친 뒤 Windows 실행 파일을 만들었습니다.</p><pre><code>cd C:\Users\User\Desktop\1026_1
+npm.cmd install
+npm.cmd start</code></pre><p><code>start-desktop.cmd</code> 실행 방법도 안내했습니다. 이 날 실제로 생성한 결과는 Windows용 폴더형 실행 파일입니다. 처음 요청한 macOS·Linux용 설치 파일까지 완성·검증한 것으로 기록하지 않습니다.</p><p class="study-keyline">코드를 작성한 상태, 의존성을 설치한 상태, 실행 파일을 만든 상태, 실제 OS에서 동작을 확인한 상태는 각각 구분해야 합니다.</p></section><section id="desktop" class="study-section"><h2>6. 웹페이지 캡처에서 OS 화면 캡처로 범위 수정</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>윈도우용 화일은.. 꼭 인터넷 화면만을 캡쳐하는 기능은 아니고 윈도우에서 모든 다양한 화면을 캡쳐할 수 있어야 하는 프로그램을 만드는거였는데?</blockquote></div><p>데스크톱 앱의 요구사항을 다시 잡았습니다. 바탕화면과 다른 프로그램을 포함한 모니터 전체 촬영, 드래그 영역 촬영, 메모장·탐색기 같은 프로그램 창 선택 촬영을 추가했습니다. 전체 화면은 <code>Alt+Shift+S</code>, 영역은 <code>Alt+Shift+A</code>로 실행하도록 했습니다.</p><p>이어 영역 선택 창에서 <code>ERR_FAILED (-2)</code>와 <code>overlay.html</code> 로딩 오류가 발생했습니다. 창의 로딩 방식과 초기화 순서를 수정해 <strong>1.0.1</strong>을 만들었습니다. 당시 자동 테스트 29개와 브라우저 검증 15개는 통과했지만 실제 Windows 영역 촬영은 재확인이 필요했습니다.</p><p>일반 프로그램의 자동 스크롤 촬영은 지원하지 않는 상태였습니다. 웹페이지 자동 스크롤 기능과 OS 캡처 기능의 범위를 구분해 기억해야 합니다.</p></section><section id="ui" class="study-section"><h2>7. 실제 사용에 맞게 작은 캡처 도구창으로 바꾸기</h2><div class="lesson-prompt"><p>실제로 입력한 질문</p><blockquote>앱 형태가 아니고 확장프로그램같은 ui인거야? 알캡쳐 같은 윈도우 전용  프로그램으로 만들어줘야 하는거 같은데? 윈도우 화면, 인터넷 화면.. 뭐 이렇게 나눠져서 한꺼번에 들어가있으니 사용하기가 너무 불편한데..</blockquote></div><p>최종적으로 <strong>영역 캡처 · 전체 화면 · 창 캡처</strong> 세 버튼을 중심으로 작은 도구창을 만들었습니다. 인터넷·바탕화면·다른 프로그램을 같은 흐름으로 촬영하고, 웹페이지 자동 스크롤은 “더보기”의 별도 도구로 옮겼습니다. 트레이와 전역 단축키도 지원하도록 했습니다.</p><p>이 날 마지막 결과는 <code>dist/1.1.0/win-unpacked/PageSnap.exe</code>입니다. 폴더형이므로 주변 파일을 함께 유지해야 합니다. UI·로직 검증은 통과했으며, 실제 Windows 촬영·트레이 동작은 추가 확인 대상으로 남았습니다.</p></section>
+    <section class="study-conclusion"><h2>다시 기억할 핵심</h2><p>요구사항 문서 → Chrome 확장 구현 → 설치·캡처 확인 → 고정 메뉴 처리 → Electron 확장 → OS 화면 캡처 → 오류 수정 → 작은 도구창 UI 개선</p><p>캡처 대상이 웹페이지인지 모니터·프로그램 창인지 먼저 정하고, 실제 OS에서 촬영·저장·단축키를 확인해야 합니다.</p></section>
+    <nav class="study-page-nav" aria-label="학습 기록 이동"><a href="./1019.html">← 1019 학습</a><a href="./1027.html">1027 학습 →</a></nav>
+  </main>
+  <footer class="site-footer"><p>© <span id="current-year"></span> Jules</p><p>배우고, 만들고, 기록하는 중입니다.</p></footer>
+</body>
+</html>

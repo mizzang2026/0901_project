@@ -16,7 +16,9 @@
     ['1006.html', '1006 · 운영 기능 완성'],
     ['1012.html', '1012 · 카카오 로그인 연결'],
     ['1013.html', '1013 · 크레딧과 구독 결제'],
-    ['1019.html', '1019 · 결제 관리와 도메인 연결']
+    ['1019.html', '1019 · 결제 관리와 도메인 연결'],
+    ['1026.html', '1026 · PageSnap 캡처 프로그램'],
+    ['1027.html', '1027 · 로또 앱과 SQLite']
   ];
 
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
